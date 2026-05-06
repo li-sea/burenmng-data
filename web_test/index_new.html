@@ -3,40 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>不认命 🔮</title>
     <link rel="manifest" href="./manifest.json">
     <meta name="apple-mobile-web-app-title" content="不认命">
     <meta name="theme-color" content="#F2F2F7">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --primary: #007AFF;
-            --primary-dark: #0056b3;
             --bg: #F2F2F7;
             --card-bg: rgba(255, 255, 255, 0.95);
             --text: #1C1C1E;
             --text-secondary: #8E8E93;
             --border: #E5E5EA;
         }
-        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
             background: var(--bg);
             min-height: 100vh;
-            padding: 0;
             color: var(--text);
-            overflow-x: hidden;
         }
-        
-        /* 毛玻璃导航栏 */
         .navbar {
             position: fixed;
             top: 0;
@@ -45,120 +31,64 @@
             height: 44px;
             background: rgba(255, 255, 255, 0.72);
             backdrop-filter: saturate(180%) blur(20px);
-            -webkit-backdrop-filter: saturate(180%) blur(20px);
             border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
         }
-        
         .navbar-title {
             font-size: 17px;
             font-weight: 600;
-            color: var(--text);
         }
-        
-        /* 主容器 - 减少 padding */
         .container {
             padding: 52px 12px 60px;
             max-width: 600px;
             margin: 0 auto;
         }
-        
-        /* 卡片样式 - 减少 padding */
         .card {
             background: var(--card-bg);
             border-radius: 10px;
             padding: 12px;
             margin-bottom: 10px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
         }
-        
         .card-title {
             font-size: 12px;
             font-weight: 600;
             color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
             margin-bottom: 8px;
         }
-        
-        /* 日历切换 - 紧凑 */
-        .calendar-type-switch {
+        .switch {
             display: flex;
             background: #E5E5EA;
             border-radius: 6px;
             padding: 2px;
             margin: 0 8px 8px;
         }
-        
-        .calendar-type-btn {
-            flex: 1;
-            padding: 5px;
-            text-align: center;
-            font-size: 13px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .calendar-type-btn.active {
-            background: white;
-            color: var(--text);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        }
-        
-        .calendar-type-btn:not(.active) {
-            color: var(--text-secondary);
-        }
-        
-        /* 性别选择 - 紧凑 */
-        .gender-switch {
-            display: flex;
-            background: #E5E5EA;
-            border-radius: 6px;
-            padding: 2px;
-            margin: 0 8px 8px;
-        }
-        
-        .gender-btn {
+        .switch-btn {
             flex: 1;
             padding: 6px;
             text-align: center;
             font-size: 14px;
             border-radius: 5px;
             cursor: pointer;
-            transition: all 0.2s;
         }
-        
-        .gender-btn.active {
+        .switch-btn.active {
             background: white;
-            color: var(--text);
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
-        
-        .gender-btn:not(.active) {
+        .switch-btn:not(.active) {
             color: var(--text-secondary);
         }
-        
-        /* 日期选择 - 紧凑 */
         .date-row {
             display: flex;
             justify-content: space-between;
             padding: 8px 12px;
-            border-bottom: 0.5px solid var(--border);
         }
-        
-        .date-row:last-child {
-            border-bottom: none;
-        }
-        
         .date-col {
             flex: 1;
             text-align: center;
         }
-        
         .date-col select {
             width: 100%;
             border: none;
@@ -167,124 +97,67 @@
             color: var(--primary);
             text-align: center;
             outline: none;
-            padding: 4px 0;
         }
-        
         .date-col label {
             display: block;
             font-size: 11px;
             color: var(--text-secondary);
             margin-bottom: 2px;
         }
-        
-        /* 时辰选择 - 紧凑网格 */
-        .hour-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            padding: 8px 12px;
-        }
-        
-        .hour-btn {
-            padding: 6px 2px;
-            background: #F2F2F7;
-            border-radius: 5px;
-            text-align: center;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-        
-        .hour-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .hour-btn .hour-name {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 1px;
-        }
-        
-        .hour-btn .hour-time {
-            display: block;
-            font-size: 10px;
-            opacity: 0.8;
-        }
-        
-        /* 生肖显示 - 紧凑 */
         .zodiac-display {
             background: white;
             border-radius: 8px;
             padding: 8px 12px;
-            margin: 8px 12px;
+            margin: 8px 12px 0;
             display: flex;
             align-items: center;
             justify-content: space-between;
             border: 0.5px solid var(--border);
         }
-        
         .zodiac-label {
             font-size: 13px;
             color: var(--text-secondary);
         }
-        
         .zodiac-value {
             font-size: 16px;
             font-weight: 600;
             color: var(--primary);
         }
-        
-        /* 祈福方向 - 紧凑 */
         .prayer-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
             padding: 8px 12px;
         }
-        
         .prayer-btn {
             padding: 10px 4px;
             background: #F2F2F7;
             border-radius: 8px;
             text-align: center;
             cursor: pointer;
-            border: 2px solid transparent;
-            transition: all 0.2s;
         }
-        
         .prayer-btn.active {
             background: var(--primary);
             color: white;
-            border-color: var(--primary);
         }
-        
-        .prayer-btn .prayer-icon {
+        .prayer-icon {
             font-size: 20px;
             margin-bottom: 4px;
         }
-        
-        .prayer-btn .prayer-label {
+        .prayer-label {
             font-size: 12px;
         }
-        
-        /* 输入框 - 紧凑 */
         .textarea-container {
             padding: 8px 12px;
         }
-        
         .textarea-container textarea {
             width: 100%;
             min-height: 60px;
             border: none;
             outline: none;
             font-size: 14px;
-            font-family: inherit;
-            resize: vertical;
             background: transparent;
         }
-        
-        /* 提交按钮 - 紧凑 */
         .submit-btn {
             width: 100%;
             padding: 14px;
@@ -295,37 +168,24 @@
             font-size: 16px;
             font-weight: 600;
             border: none;
-            cursor: pointer;
             margin-top: 12px;
         }
-        
-        .submit-btn:active {
-            background: var(--primary-dark);
-        }
-        
-        /* 免责声明 - 紧凑 */
         .disclaimer {
             margin-top: 12px;
             padding: 12px;
             text-align: center;
             font-size: 11px;
             color: var(--text-secondary);
-            line-height: 1.4;
         }
-        
-        /* 结果区域 */
-        #result-section {
+        #result-section, .loading {
             display: none;
         }
-        
-        /* 八字展示 - 紧凑 */
         .bazi-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 6px;
             margin-bottom: 10px;
         }
-        
         .bazi-item {
             text-align: center;
             padding: 8px 4px;
@@ -333,32 +193,24 @@
             border-radius: 6px;
             border: 0.5px solid var(--border);
         }
-        
         .bazi-label {
             font-size: 11px;
             color: var(--text-secondary);
-            margin-bottom: 2px;
         }
-        
         .bazi-value {
             font-size: 16px;
             font-weight: 600;
             color: var(--primary);
         }
-        
-        /* 五行统计 - 紧凑 */
         .wuxing-bar {
             display: flex;
             align-items: center;
             margin-bottom: 6px;
         }
-        
         .wuxing-label {
             width: 35px;
             font-size: 13px;
-            font-weight: 500;
         }
-        
         .wuxing-track {
             flex: 1;
             height: 6px;
@@ -367,21 +219,15 @@
             overflow: hidden;
             margin: 0 8px;
         }
-        
         .wuxing-fill {
             height: 100%;
-            border-radius: 3px;
-            transition: width 0.3s;
         }
-        
         .wuxing-count {
             width: 25px;
             text-align: right;
             font-size: 13px;
             font-weight: 600;
         }
-        
-        /* 寺庙卡片 - 紧凑 */
         .temple-card {
             background: white;
             border-radius: 8px;
@@ -389,108 +235,46 @@
             margin-bottom: 8px;
             border: 0.5px solid var(--border);
         }
-        
         .temple-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
             margin-bottom: 8px;
         }
-        
         .temple-name {
             font-size: 15px;
             font-weight: 600;
-            color: var(--text);
         }
-        
         .temple-location {
             font-size: 12px;
             color: var(--text-secondary);
-            margin-top: 2px;
         }
-        
-        .temple-rating {
-            font-size: 12px;
-        }
-        
-        .temple-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-bottom: 8px;
-        }
-        
         .tag {
+            display: inline-block;
             font-size: 10px;
             padding: 2px 6px;
             border-radius: 3px;
             background: #F2F2F7;
-            color: var(--text-secondary);
+            margin-right: 4px;
         }
-        
-        .tag.famous {
-            background: #FFF3CD;
-            color: #856404;
-        }
-        
-        .match-badge {
-            display: inline-block;
-            font-size: 11px;
-            padding: 3px 10px;
-            border-radius: 10px;
-            background: var(--primary);
-            color: white;
-            margin-bottom: 8px;
-        }
-        
         .match-reason {
             font-size: 13px;
-            color: var(--text);
-            line-height: 1.4;
             padding: 8px;
             background: #F8F9FA;
             border-radius: 6px;
-            margin-bottom: 8px;
+            margin: 8px 0;
         }
-        
-        .temple-details {
-            font-size: 12px;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-        
-        .temple-details strong {
-            color: var(--text);
-        }
-        
-        /* 法器推荐 - 紧凑 */
-        .faqi-card {
-            background: white;
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 8px;
-        }
-        
-        .faqi-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 6px;
-        }
-        
-        .faqi-desc {
-            font-size: 12px;
-            color: var(--text-secondary);
-            line-height: 1.4;
-        }
-        
-        /* 加载动画 */
-        .loading {
+        .retake-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--text-secondary);
+            color: white;
             text-align: center;
-            padding: 30px 20px;
-            display: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            margin-top: 10px;
         }
-        
         .loading-spinner {
             width: 35px;
             height: 35px;
@@ -500,74 +284,31 @@
             animation: spin 1s linear infinite;
             margin: 0 auto 12px;
         }
-        
         @keyframes spin {
             to { transform: rotate(360deg); }
-        }
-        
-        .loading-text {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-        
-        /* 重新测算按钮 */
-        .retake-btn {
-            display: block;
-            width: 100%;
-            padding: 14px;
-            background: var(--text-secondary);
-            color: white;
-            text-align: center;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 10px;
-            border: none;
-            cursor: pointer;
-        }
-        
-        .retake-btn:active {
-            opacity: 0.8;
-        }
-        
-        /* 用户信息 */
-        .user-info {
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        
-        .user-info div {
-            margin-bottom: 4px;
         }
     </style>
 </head>
 <body>
-    <!-- 导航栏 -->
     <div class="navbar">
         <div class="navbar-title">不认命 🔮</div>
     </div>
     
-    <!-- 主容器 -->
     <div class="container">
-        <!-- 输入区域 -->
         <div id="input-section">
-            <!-- 出生信息 -->
             <div class="card">
                 <div class="card-title">出生信息</div>
                 
-                <!-- 日历类型 -->
-                <div class="calendar-type-switch">
-                    <div class="calendar-type-btn active" onclick="setCalendarType('solar')">阳历</div>
-                    <div class="calendar-type-btn" onclick="setCalendarType('lunar')">阴历</div>
+                <div class="switch">
+                    <div class="switch-btn active" onclick="setCalendarType('solar')">阳历</div>
+                    <div class="switch-btn" onclick="setCalendarType('lunar')">阴历</div>
                 </div>
                 
-                <!-- 性别选择 -->
-                <div class="gender-switch">
-                    <div class="gender-btn active" onclick="setGender('male')">男</div>
-                    <div class="gender-btn" onclick="setGender('female')">女</div>
+                <div class="switch">
+                    <div class="switch-btn active" onclick="setGender('male')">男</div>
+                    <div class="switch-btn" onclick="setGender('female')">女</div>
                 </div>
                 
-                <!-- 日期选择 -->
                 <div class="date-row">
                     <div class="date-col">
                         <label>年</label>
@@ -581,19 +322,31 @@
                         <label>日</label>
                         <select id="daySelect" onchange="updateZodiac()"></select>
                     </div>
+                    <div class="date-col">
+                        <label>时辰</label>
+                        <select id="hourSelect" onchange="updateHour(this.value)">
+                            <option value="23">子 23-1</option>
+                            <option value="1">丑 1-3</option>
+                            <option value="3">寅 3-5</option>
+                            <option value="5">卯 5-7</option>
+                            <option value="7">辰 7-9</option>
+                            <option value="9">巳 9-11</option>
+                            <option value="11">午 11-13</option>
+                            <option value="13" selected>未 13-15</option>
+                            <option value="15">申 15-17</option>
+                            <option value="17">酉 17-19</option>
+                            <option value="19">戌 19-21</option>
+                            <option value="21">亥 21-23</option>
+                        </select>
+                    </div>
                 </div>
                 
-                <!-- 时辰选择 -->
-                <div class="hour-grid" id="hourGrid"></div>
-                
-                <!-- 生肖显示 -->
                 <div class="zodiac-display">
                     <span class="zodiac-label">生肖</span>
                     <span class="zodiac-value" id="zodiacValue">-</span>
                 </div>
             </div>
             
-            <!-- 想了解什么 -->
             <div class="card">
                 <div class="card-title">想了解什么</div>
                 <div class="prayer-grid" id="prayerGrid"></div>
@@ -602,90 +355,66 @@
                 </div>
             </div>
             
-            <!-- 提交按钮 -->
             <button class="submit-btn" onclick="calculate()">开始测算</button>
             
-            <!-- 免责声明 -->
             <div class="disclaimer">
-                ⚠️ <strong>免责声明</strong><br>
-                本应用为传统文化学习工具，所有内容仅供文化研究和娱乐参考，不应作为任何决策依据。
+                ⚠️ 本应用为传统文化学习工具，内容仅供文化研究和娱乐参考
             </div>
         </div>
         
-        <!-- 加载动画 -->
         <div class="loading" id="loading">
             <div class="loading-spinner"></div>
             <div class="loading-text">正在为您测算...</div>
         </div>
         
-        <!-- 结果区域 -->
         <div id="result-section">
-            <!-- 基本信息 -->
             <div class="card">
                 <div class="card-title">基本信息</div>
-                <div class="user-info" id="user-info"></div>
+                <div id="user-info"></div>
             </div>
             
-            <!-- 八字结果 -->
             <div class="card">
                 <div class="card-title">生辰八字</div>
                 <div class="bazi-grid" id="bazi-grid"></div>
             </div>
             
-            <!-- 五行统计 -->
             <div class="card">
                 <div class="card-title">五行分布</div>
                 <div id="wuxing-bars"></div>
-                <div id="weakest-wuxing" style="margin-top: 8px; font-size: 13px; color: var(--text-secondary);"></div>
             </div>
             
-            <!-- 法器推荐 -->
             <div class="card">
                 <div class="card-title">建议佩戴</div>
                 <div id="faqi-list"></div>
             </div>
             
-            <!-- 寺庙推荐 -->
             <div class="card">
                 <div class="card-title">推荐寺庙</div>
                 <div id="temple-list"></div>
             </div>
             
-            <!-- 重新测算按钮 -->
             <button class="retake-btn" onclick="retake()">重新测算</button>
-            
-            <!-- 免责声明 -->
-            <div class="disclaimer">
-                ⚠️ <strong>免责声明</strong><br>
-                本应用为传统文化学习工具，所有内容仅供文化研究和娱乐参考，不应作为任何决策依据。
-            </div>
         </div>
     </div>
     
     <script>
-        // 全局变量
         let calendarType = 'solar';
         let gender = 'male';
-        let selectedHour = 13; // 默认未时
+        let selectedHour = 13;
         let selectedPrayer = '全部';
         
-        // 初始化
         window.onload = function() {
             initDateSelectors();
-            initHourGrid();
             initPrayerGrid();
             updateZodiac();
         };
         
-        // 初始化日期选择器
         function initDateSelectors() {
             const yearSelect = document.getElementById('yearSelect');
             const monthSelect = document.getElementById('monthSelect');
             const daySelect = document.getElementById('daySelect');
-            
             const currentYear = new Date().getFullYear();
             
-            // 年份：1900-2025
             for (let year = 1900; year <= currentYear; year++) {
                 const option = document.createElement('option');
                 option.value = year;
@@ -694,7 +423,6 @@
                 yearSelect.appendChild(option);
             }
             
-            // 月份：1-12
             for (let month = 1; month <= 12; month++) {
                 const option = document.createElement('option');
                 option.value = month;
@@ -703,7 +431,6 @@
                 monthSelect.appendChild(option);
             }
             
-            // 日期：1-31
             for (let day = 1; day <= 31; day++) {
                 const option = document.createElement('option');
                 option.value = day;
@@ -713,37 +440,6 @@
             }
         }
         
-        // 初始化时辰选择
-        function initHourGrid() {
-            const hours = [
-                { name: '子', time: '23-1', value: 23 },
-                { name: '丑', time: '1-3', value: 1 },
-                { name: '寅', time: '3-5', value: 3 },
-                { name: '卯', time: '5-7', value: 5 },
-                { name: '辰', time: '7-9', value: 7 },
-                { name: '巳', time: '9-11', value: 9 },
-                { name: '午', time: '11-13', value: 11 },
-                { name: '未', time: '13-15', value: 13 },
-                { name: '申', time: '15-17', value: 15 },
-                { name: '酉', time: '17-19', value: 17 },
-                { name: '戌', time: '19-21', value: 19 },
-                { name: '亥', time: '21-23', value: 21 }
-            ];
-            
-            const hourGrid = document.getElementById('hourGrid');
-            hours.forEach(hour => {
-                const btn = document.createElement('div');
-                btn.className = 'hour-btn' + (hour.value === 13 ? ' active' : '');
-                btn.onclick = () => selectHour(hour.value, btn);
-                btn.innerHTML = `
-                    <span class="hour-name">${hour.name}时</span>
-                    <span class="hour-time">${hour.time}</span>
-                `;
-                hourGrid.appendChild(btn);
-            });
-        }
-        
-        // 初始化祈福方向
         function initPrayerGrid() {
             const prayers = [
                 { icon: '🔮', label: '全部', value: '全部' },
@@ -762,45 +458,35 @@
                 const btn = document.createElement('div');
                 btn.className = 'prayer-btn' + (prayer.value === '全部' ? ' active' : '');
                 btn.onclick = () => selectPrayer(prayer.value, btn);
-                btn.innerHTML = `
-                    <div class="prayer-icon">${prayer.icon}</div>
-                    <div class="prayer-label">${prayer.label}</div>
-                `;
+                btn.innerHTML = `<div class="prayer-icon">${prayer.icon}</div><div class="prayer-label">${prayer.label}</div>`;
                 prayerGrid.appendChild(btn);
             });
         }
         
-        // 设置日历类型
         function setCalendarType(type) {
             calendarType = type;
-            document.querySelectorAll('.calendar-type-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.textContent === (type === 'solar' ? '阳历' : '阴历'));
-            });
+            const btns = document.querySelectorAll('.switch-btn');
+            btns[0].classList.toggle('active', type === 'solar');
+            btns[1].classList.toggle('active', type === 'lunar');
         }
         
-        // 设置性别
         function setGender(g) {
             gender = g;
-            document.querySelectorAll('.gender-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.textContent === (g === 'male' ? '男' : '女'));
-            });
+            const btns = document.querySelectorAll('.switch-btn');
+            btns[2].classList.toggle('active', g === 'male');
+            btns[3].classList.toggle('active', g === 'female');
         }
         
-        // 选择时辰
-        function selectHour(hour, btn) {
-            selectedHour = hour;
-            document.querySelectorAll('.hour-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        function updateHour(hour) {
+            selectedHour = parseInt(hour);
         }
         
-        // 选择祈福方向
         function selectPrayer(prayer, btn) {
             selectedPrayer = prayer;
             document.querySelectorAll('.prayer-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         }
         
-        // 更新生肖
         function updateZodiac() {
             const year = parseInt(document.getElementById('yearSelect').value);
             const zodiacs = ['猴', '鸡', '狗', '猪', '鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊'];
@@ -809,22 +495,18 @@
             document.getElementById('zodiacValue').textContent = zodiac;
         }
         
-        // 计算
         async function calculate() {
             const year = parseInt(document.getElementById('yearSelect').value);
             const month = parseInt(document.getElementById('monthSelect').value);
             const day = parseInt(document.getElementById('daySelect').value);
             
-            // 显示加载动画
             document.getElementById('input-section').style.display = 'none';
             document.getElementById('loading').style.display = 'block';
             
             try {
                 const response = await fetch('https://burenmng-data.onrender.com/api/match', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         year: year,
                         month: month,
@@ -835,30 +517,23 @@
                     })
                 });
                 
-                if (!response.ok) {
-                    throw new Error('API 请求失败');
-                }
+                if (!response.ok) throw new Error('API 请求失败');
                 
                 const result = await response.json();
-                
-                // 显示结果
                 showResult(result, { year, month, day });
                 
             } catch (error) {
-                console.error('Error:', error);
                 alert('加载失败，请稍后重试');
                 retake();
             }
         }
         
-        // 显示结果
         function showResult(result, userData) {
             document.getElementById('loading').style.display = 'none';
             document.getElementById('result-section').style.display = 'block';
             
-            // 基本信息
             document.getElementById('user-info').innerHTML = `
-                <div class="user-info">
+                <div style="font-size: 14px; line-height: 1.5;">
                     <div><strong>性别：</strong>${gender === 'male' ? '男' : '女'}</div>
                     <div><strong>出生：</strong>${userData.year}年${userData.month}月${userData.day}日</div>
                     <div><strong>日历：</strong>${calendarType === 'lunar' ? '农历' : '公历'}</div>
@@ -866,7 +541,6 @@
                 </div>
             `;
             
-            // 八字
             if (result.bazi) {
                 const pillars = [
                     { label: '年柱', value: result.bazi['年柱'] || '--' },
@@ -883,16 +557,8 @@
                 `).join('');
             }
             
-            // 五行
             if (result.wuxing) {
-                const colors = {
-                    '金': '#FFD700',
-                    '木': '#22C55E',
-                    '水': '#3B82F6',
-                    '火': '#EF4444',
-                    '土': '#A87B51'
-                };
-                
+                const colors = { '金': '#FFD700', '木': '#22C55E', '水': '#3B82F6', '火': '#EF4444', '土': '#A87B51' };
                 const items = [
                     { name: '金', count: result.wuxing['金'] || 0 },
                     { name: '木', count: result.wuxing['木'] || 0 },
@@ -912,67 +578,41 @@
                         <div class="wuxing-count">${item.count}</div>
                     </div>
                 `).join('');
-                
-                const weakest = Object.entries(result.wuxing).sort((a, b) => a[1] - b[1])[0];
-                if (weakest) {
-                    document.getElementById('weakest-wuxing').innerHTML = `<strong>五行最弱：</strong>${weakest[0]}（${weakest[1]}个）`;
-                }
             }
             
-            // 法器
             if (result.faqi && result.faqi.length > 0) {
                 document.getElementById('faqi-list').innerHTML = result.faqi.slice(0, 2).map(f => `
-                    <div class="faqi-card">
-                        <div class="faqi-name">${f.name}</div>
-                        <div class="faqi-desc">${f.description || f.reason || ''}</div>
+                    <div style="background: white; border-radius: 8px; padding: 10px; margin-bottom: 8px;">
+                        <div style="font-size: 14px; font-weight: 600; margin-bottom: 6px;">${f.name}</div>
+                        <div style="font-size: 12px; color: var(--text-secondary);">${f.description || f.reason || ''}</div>
                     </div>
                 `).join('');
             }
             
-            // 寺庙
             if (result.temples && result.temples.length > 0) {
-                document.getElementById('temple-list').innerHTML = result.temples.map((t, i) => {
-                    const tags = [];
-                    if (t.temple_category === '知名古刹') tags.push('<span class="tag famous">知名古刹</span>');
-                    else if (t.temple_category === '民间传说') tags.push('<span class="tag">民间传说</span>');
-                    else tags.push('<span class="tag">地方寺庙</span>');
-                    
-                    if (t.type) tags.push(`<span class="tag">${t.type}</span>`);
-                    
-                    return `
-                        <div class="temple-card">
-                            <div class="temple-header">
-                                <div>
-                                    <div class="temple-name">${i + 1}. ${t.name}</div>
-                                    <div class="temple-location">📍 ${t.province || ''}${t.city || ''}</div>
-                                </div>
-                                <div class="temple-rating">${'⭐'.repeat(Math.round(t.rating || 0))}</div>
+                document.getElementById('temple-list').innerHTML = result.temples.map((t, i) => `
+                    <div class="temple-card">
+                        <div class="temple-header">
+                            <div>
+                                <div class="temple-name">${i + 1}. ${t.name}</div>
+                                <div class="temple-location">📍 ${t.province || ''}${t.city || ''}</div>
                             </div>
-                            <div class="temple-tags">${tags.join('')}</div>
-                            <div class="match-badge">文化契合度</div>
-                            <div class="match-reason">${t.match_reason || t.reason || '暂无'}</div>
+                            <div>${'⭐'.repeat(Math.round(t.rating || 0))}</div>
                         </div>
-                    `;
-                }).join('');
+                        <div>
+                            <span class="tag">${t.temple_category || '寺庙'}</span>
+                            ${t.type ? `<span class="tag">${t.type}</span>` : ''}
+                        </div>
+                        <div class="match-reason">${t.match_reason || t.reason || '暂无'}</div>
+                    </div>
+                `).join('');
             }
         }
         
-        // 重新测算
         function retake() {
             document.getElementById('result-section').style.display = 'none';
             document.getElementById('input-section').style.display = 'block';
         }
-    </script>
-    
-    <script>
-    // Register Service Worker for PWA
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js')
-          .then(reg => console.log('Service Worker registered:', reg.scope))
-          .catch(err => console.log('Service Worker registration failed:', err));
-      });
-    }
     </script>
 </body>
 </html>
