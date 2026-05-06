@@ -710,6 +710,11 @@
             display: none !important;
         }
     </style>
+<link rel="manifest" href="./manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="不认命">
+<meta name="theme-color" content="#F2F2F7">
 </head>
 <body>
     <!-- 导航栏 -->
@@ -1273,5 +1278,16 @@
             resultSection.classList.add('show');
         }
     </script>
+
+<script>
+// Register Service Worker for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(reg => console.log('Service Worker registered:', reg.scope))
+      .catch(err => console.log('Service Worker registration failed:', err));
+  });
+}
+</script>
 </body>
 </html>
