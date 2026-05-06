@@ -1,0 +1,26 @@
+{
+  "name": "不认命 🔮",
+  "short_name": "不认命",
+  "description": "传统文化学习工具 - 八字测算与寺庙祈福指南",
+  "start_url": "./index_new.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F2F2F7",
+  "theme_color": "#F2F2F7",
+  "lang": "zh-CN",
+  "categories": ["lifestyle", "education"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
