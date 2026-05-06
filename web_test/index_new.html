@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>不认命 🔮</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        :root {
+            --primary: #007AFF;
+            --primary-dark: #0056b3;
+            --bg: #F2F2F7;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --text: #1C1C1E;
+            --text-secondary: #8E8E93;
+            --border: #E5E5EA;
+            --success: #34C759;
+            --warning: #FF9500;
+            --danger: #FF3B30;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            padding: 0;
+            color: var(--text);
+            overflow-x: hidden;
+        }
+        
+        /* 毛玻璃导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .navbar-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        /* 主容器 */
+        .container {
+            padding: 60px 16px 100px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+        
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+        
+        /* 表单组 */
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .form-label {
+            font-size: 17px;
+            color: var(--text);
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+        
+        /* iOS 风格输入框 */
+        .input-group {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .input-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 0.5px solid var(--border);
+        }
+        
+        .input-item:last-child {
+            border-bottom: none;
+        }
+        
+        .input-item label {
+            flex: 1;
+            font-size: 17px;
+            color: var(--text);
+        }
+        
+        .input-item input {
+            border: none;
+            outline: none;
+            font-size: 17px;
+            text-align: right;
+            color: var(--primary);
+            width: 120px;
+            background: transparent;
+        }
+        
+        .input-item input::placeholder {
+            color: var(--text-secondary);
+        }
+        
+        /* 日期滚轮选择器 */
+        .date-picker-container {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .calendar-type-switch {
+            display: flex;
+            background: #E5E5EA;
+            border-radius: 8px;
+            padding: 2px;
+            margin: 0 16px 12px;
+        }
+        
+        .calendar-type-btn {
+            flex: 1;
+            padding: 6px;
+            text-align: center;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .calendar-type-btn.active {
+            background: white;
+            color: var(--text);
+            shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .calendar-type-btn:not(.active) {
+            color: var(--text-secondary);
+        }
+        
+        .date-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 0.5px solid var(--border);
+        }
+        
+        .date-row:last-child {
+            border-bottom: none;
+        }
+        
+        .date-col {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .date-col label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .date-col select {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 17px;
+            color: var(--text);
+            background: transparent;
+            text-align: center;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        
+        /* 时辰选择 */
+
+        
+        /* 性别选择 */
+        .gender-toggle {
+            display: flex;
+            background: #E5E5EA;
+            border-radius: 8px;
+            padding: 2px;
+        }
+        
+        .gender-btn {
+            flex: 1;
+            padding: 8px;
+            text-align: center;
+            border-radius: 6px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .gender-btn.active {
+            background: white;
+            color: var(--text);
+            shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gender-btn:not(.active) {
+            color: var(--text-secondary);
+        }
+        
+        /* 祈福方向快捷键 */
+        .prayer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        
+        .prayer-btn {
+            padding: 12px 8px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: white;
+            font-size: 14px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        
+        .prayer-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .prayer-btn .icon {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        /* 最近发生的事 */
+        .textarea-group {
+            background: white;
+            border-radius: 10px;
+            padding: 12px 16px;
+        }
+        
+        .textarea-group textarea {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 17px;
+            color: var(--text);
+            resize: none;
+            min-height: 80px;
+            font-family: inherit;
+        }
+        
+        .textarea-group textarea::placeholder {
+            color: var(--text-secondary);
+        }
+        
+        .textarea-hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+        
+        /* 主按钮 */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:active {
+            transform: scale(0.98);
+            background: var(--primary-dark);
+        }
+        
+        .submit-btn:disabled {
+            background: var(--border);
+            cursor: not-allowed;
+        }
+        
+        /* 结果区域 */
+        .result-section {
+            display: none;
+        }
+        
+        .result-section.show {
+            display: block;
+        }
+        
+        /* 八字结果卡片 */
+        .bazi-header {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .bazi-info-item {
+            background: #F2F2F7;
+            padding: 12px;
+            border-radius: 8px;
+        }
+        
+        .bazi-info-item .label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        
+        .bazi-info-item .value {
+            font-size: 15px;
+            color: var(--text);
+            font-weight: 500;
+        }
+        
+        .bazi-pillars {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .pillar-item {
+            background: #F2F2F7;
+            padding: 12px 8px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .pillar-item .label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .pillar-item .value {
+            font-size: 18px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        /* 五行展示 */
+        .wuxing-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
+        }
+        
+        .wuxing-item {
+            padding: 10px 6px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .wuxing-木 { background: #E8F5E9; color: #2E7D32; }
+        .wuxing-火 { background: #FFEBEE; color: #C62828; }
+        .wuxing-土 { background: #FFF8E1; color: #F57F17; }
+        .wuxing-金 { background: #E3F2FD; color: #1565C0; }
+        .wuxing-水 { background: #ECEFF1; color: #455A64; }
+        
+        .wuxing-item.weakest {
+            border: 2px solid var(--danger);
+            position: relative;
+        }
+        
+        .wuxing-item.weakest::after {
+            content: "⚠️";
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 12px;
+        }
+        
+        /* 寺庙卡片 */
+        .temple-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        .temple-card .expand-btn {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 6px 12px;
+            background: #F2F2F7;
+            color: var(--primary);
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .temple-card .expand-btn:hover {
+            background: #E5E5EA;
+        }
+        
+        .temple-card .expand-content {
+            display: none;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 0.5px solid var(--border);
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .temple-card .expand-content.show {
+            display: block;
+        }
+        
+        .temple-card h3 {
+            font-size: 17px;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+        
+        .temple-meta {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .temple-tag {
+            padding: 4px 8px;
+            background: #F2F2F7;
+            border-radius: 4px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .temple-info {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        
+        .match-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--primary);
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+        
+        /* 法器卡片 */
+        .faqi-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .faqi-card h4 {
+            font-size: 16px;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+        
+        .faqi-card .wear-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            background: var(--primary);
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .faqi-card .wear-position {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #F2F2F7;
+            color: var(--text);
+            border-radius: 12px;
+            font-size: 12px;
+            margin-left: 6px;
+        }
+        
+        .faqi-card .description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        .faqi-card .reason {
+            padding: 10px;
+            background: #F2F2F7;
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .faqi-card .wear-detail {
+            padding: 10px;
+            background: #FFF8E1;
+            border-left: 3px solid var(--warning);
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        /* 免责声明 */
+        .disclaimer {
+            background: rgba(255, 149, 0, 0.1);
+            border-left: 3px solid var(--warning);
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .disclaimer p {
+            font-size: 12px;
+            color: var(--warning);
+            line-height: 1.5;
+        }
+        
+        /* 用户须知弹窗 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+        
+        .modal-overlay.show {
+            display: flex;
+        }
+        
+        .modal {
+            background: white;
+            border-radius: 14px;
+            max-width: 320px;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 0.5px solid var(--border);
+        }
+        
+        .modal-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .modal-body {
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .modal-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        
+        .modal-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: var(--text);
+        }
+        
+        .modal-footer {
+            padding: 0 20px 20px;
+        }
+        
+        .modal-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .modal-btn:disabled {
+            background: var(--border);
+            cursor: not-allowed;
+        }
+        
+        /* 加载状态 */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1500;
+        }
+        
+        .loading-overlay.show {
+            display: flex;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 底部提示 */
+        .footer-note {
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-secondary);
+            padding: 16px;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+        
+        .footer-note strong {
+            color: var(--text);
+        }
+        
+        /* 结果部分标题 */
+        .result-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+        
+        /* 隐藏元素 */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <div class="navbar">
+        <div class="navbar-title">不认命 🔮</div>
+    </div>
+    
+    <!-- 主容器 -->
+    <div class="container">
+
+        
+        <!-- 输入表单 -->
+        <div class="card">
+            <div class="card-title">出生信息</div>
+            
+            <!-- 日历类型 + 性别 一行 -->
+            <div style="display:flex;gap:12px;margin-bottom:12px;">
+                <div class="calendar-type-switch" style="flex:1;margin:0;">
+                    <div class="calendar-type-btn active" data-type="solar">阳历</div>
+                    <div class="calendar-type-btn" data-type="lunar">阴历</div>
+                </div>
+                <div class="gender-toggle" style="flex:1;">
+                    <div class="gender-btn active" data-value="male">男</div>
+                    <div class="gender-btn" data-value="female">女</div>
+                </div>
+            </div>
+            
+            <!-- 日期 + 时辰 一行 -->
+            <div class="date-picker-container">
+                <div class="date-row">
+                    <div class="date-col">
+                        <label>年</label>
+                        <select id="year"></select>
+                    </div>
+                    <div class="date-col">
+                        <label>月</label>
+                        <select id="month"></select>
+                    </div>
+                    <div class="date-col">
+                        <label>日</label>
+                        <select id="day"></select>
+                    </div>
+                    <div class="date-col">
+                        <label>时辰</label>
+                        <select id="hourSelect" style="font-size:13px;"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 祈福方向 -->
+        <div class="card">
+            <div class="card-title">想了解什么</div>
+            <div class="prayer-grid" id="prayerGrid">
+                <div class="prayer-btn" data-value="">
+                    <span class="icon">🔮</span>
+                    全部
+                </div>
+                <div class="prayer-btn" data-value="事业">
+                    <span class="icon">💼</span>
+                    事业
+                </div>
+                <div class="prayer-btn" data-value="财运">
+                    <span class="icon">💰</span>
+                    财运
+                </div>
+                <div class="prayer-btn" data-value="姻缘">
+                    <span class="icon">💕</span>
+                    姻缘
+                </div>
+                <div class="prayer-btn" data-value="健康">
+                    <span class="icon">💪</span>
+                    健康
+                </div>
+                <div class="prayer-btn" data-value="平安">
+                    <span class="icon">🙏</span>
+                    平安
+                </div>
+                <div class="prayer-btn" data-value="学业">
+                    <span class="icon">📚</span>
+                    学业
+                </div>
+                <div class="prayer-btn" data-value="修行">
+                    <span class="icon">🧘</span>
+                    修行
+                </div>
+                <div class="prayer-btn" data-value="custom">
+                    <span class="icon">✨</span>
+                    其他
+                </div>
+            </div>
+            <!-- 自定义输入框（隐藏） -->
+            <div class="input-group" id="customPrayerInput" style="margin-top:12px;display:none;">
+                <div class="input-item">
+                    <label>想了解</label>
+                    <input type="text" id="customPrayerText" placeholder="请输入你想了解的内容...">
+                </div>
+            </div>
+            </div>
+        </div>
+        
+        <!-- 最近发生的事 -->
+        <div class="card">
+            <div class="card-title">最近发生的事 <span style="color:var(--text-secondary);font-size:12px;">（可选）</span></div>
+            <div class="textarea-group">
+                <textarea id="recentEvents" placeholder="说说最近遇到的事情..." style="min-height:60px;"></textarea>
+            </div>
+        </div>
+        
+
+        
+        <!-- 提交按钮 -->
+        <button type="button" class="submit-btn" id="submitBtn">开始测算</button>
+        
+        <!-- 结果展示区域 -->
+        <div class="result-section" id="resultSection">
+            <h2 class="result-title" style="margin-top: 32px;">📊 你的八字</h2>
+            
+            <div class="card">
+                <div class="bazi-header" id="baziHeader"></div>
+                <div class="bazi-pillars" id="baziPillars"></div>
+                <div class="wuxing-grid" id="wuxingGrid"></div>
+            </div>
+            
+            <h2 class="result-title">🏯 推荐寺庙</h2>
+            <div id="templesList"></div>
+            <div style="text-align:center;margin:16px 0;">
+                <button class="submit-btn" id="refreshBtn" style="width:auto;padding:12px 32px;font-size:15px;background:var(--text-secondary);">换一批推荐</button>
+            </div>
+            
+            <h2 class="result-title">💎 建议佩戴</h2>
+            <div id="faqiList"></div>
+        </div>
+        
+        <!-- 底部提示 -->
+        <div class="footer-note">
+            <strong>⚠️ 免责声明</strong><br>
+            本应用为传统文化学习工具，所有内容仅供文化研究和娱乐参考，不应作为任何决策依据。
+        </div>
+    </div>
+    
+    <!-- 用户须知弹窗 -->
+    <div class="modal-overlay" id="termsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">欢迎使用不认命 🔮</div>
+            </div>
+            <div class="modal-body">
+                <p class="modal-text">
+                    本应用为传统文化学习工具，提供八字知识科普、寺庙文化介绍、阴阳历转换等功能。
+                </p>
+                <p class="modal-text">
+                    ⚠️ 重要提示：所有内容仅供文化研究和娱乐参考，不代表科学结论，不应作为任何决策依据。
+                </p>
+                <div class="modal-checkbox">
+                    <input type="checkbox" id="agreeCheckbox">
+                    <label for="agreeCheckbox">我已阅读并同意用户协议和免责声明</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn" id="agreeBtn" disabled>开始使用</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 加载状态 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+    </div>
+    
+    <script>
+        const API_BASE = 'https://burenmng-data.onrender.com';
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initDatePicker();
+            initTimePicker();
+            initPrayerGrid();
+            initGenderToggle();
+            initCalendarSwitch();
+            checkFirstVisit();
+            
+            // 提交按钮
+            document.getElementById('submitBtn').addEventListener('click', handleSubmit);
+        });
+        
+        // 检查是否首次访问
+        function checkFirstVisit() {
+            const hasAgreed = localStorage.getItem('termsAgreed');
+            if (!hasAgreed) {
+                document.getElementById('termsModal').classList.add('show');
+            }
+        }
+        
+        // 同意协议
+        document.getElementById('agreeCheckbox').addEventListener('change', (e) => {
+            document.getElementById('agreeBtn').disabled = !e.target.checked;
+        });
+        
+        document.getElementById('agreeBtn').addEventListener('click', () => {
+            localStorage.setItem('termsAgreed', 'true');
+            document.getElementById('termsModal').classList.remove('show');
+        });
+        
+        // 初始化日期选择器
+        function initDatePicker() {
+            const yearSelect = document.getElementById('year');
+            const monthSelect = document.getElementById('month');
+            const daySelect = document.getElementById('day');
+            
+            const currentYear = new Date().getFullYear();
+            
+            // 年份
+            for (let y = 1900; y <= currentYear; y++) {
+                const option = document.createElement('option');
+                option.value = y;
+                option.textContent = y + '年';
+                if (y === 1990) option.selected = true;
+                yearSelect.appendChild(option);
+            }
+            
+            // 月份
+            for (let m = 1; m <= 12; m++) {
+                const option = document.createElement('option');
+                option.value = m;
+                option.textContent = m + '月';
+                if (m === 1) option.selected = true;
+                monthSelect.appendChild(option);
+            }
+            
+            // 日期
+            updateDays();
+            
+            yearSelect.addEventListener('change', updateDays);
+            monthSelect.addEventListener('change', updateDays);
+        }
+        
+        // 更新天数
+        function updateDays() {
+            const year = parseInt(document.getElementById('year').value);
+            const month = parseInt(document.getElementById('month').value);
+            const daySelect = document.getElementById('day');
+            
+            const daysInMonth = new Date(year, month, 0).getDate();
+            
+            daySelect.innerHTML = '';
+            for (let d = 1; d <= daysInMonth; d++) {
+                const option = document.createElement('option');
+                option.value = d;
+                option.textContent = d + '日';
+                if (d === 1) option.selected = true;
+                daySelect.appendChild(option);
+            }
+        }
+        
+        // 初始化时辰选择器
+        function initTimePicker() {
+            const hourSelect = document.getElementById('hourSelect');
+            const times = [
+                { value: 23, label: '子时 (23-1 点)' },
+                { value: 1, label: '丑时 (1-3 点)' },
+                { value: 3, label: '寅时 (3-5 点)' },
+                { value: 5, label: '卯时 (5-7 点)' },
+                { value: 7, label: '辰时 (7-9 点)' },
+                { value: 9, label: '巳时 (9-11 点)' },
+                { value: 11, label: '午时 (11-13 点)' },
+                { value: 13, label: '未时 (13-15 点)' },
+                { value: 15, label: '申时 (15-17 点)' },
+                { value: 17, label: '酉时 (17-19 点)' },
+                { value: 19, label: '戌时 (19-21 点)' },
+                { value: 21, label: '亥时 (21-23 点)' }
+            ];
+            
+            times.forEach(time => {
+                const option = document.createElement('option');
+                option.value = time.value;
+                option.textContent = time.label;
+                if (time.value === 11) option.selected = true; // 默认午时
+                hourSelect.appendChild(option);
+            });
+        }
+        
+        // 初始化祈福方向
+        function initPrayerGrid() {
+            const prayerGrid = document.getElementById('prayerGrid');
+            const customInput = document.getElementById('customPrayerInput');
+            
+            prayerGrid.addEventListener('click', (e) => {
+                const btn = e.target.closest('.prayer-btn');
+                if (btn) {
+                    document.querySelectorAll('.prayer-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // 点击"其他"显示输入框
+                    if (btn.dataset.value === 'custom') {
+                        customInput.style.display = 'block';
+                        document.getElementById('customPrayerText').focus();
+                    } else {
+                        customInput.style.display = 'none';
+                    }
+                }
+            });
+            
+            // 默认选中"全部"
+            prayerGrid.querySelector('[data-value=""]').classList.add('active');
+        }
+        
+        // 初始化性别切换
+        function initGenderToggle() {
+            const genderToggle = document.querySelector('.gender-toggle');
+            genderToggle.addEventListener('click', (e) => {
+                const btn = e.target.closest('.gender-btn');
+                if (btn) {
+                    document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                }
+            });
+        }
+        
+        // 初始化日历切换
+        function initCalendarSwitch() {
+            const switchBtns = document.querySelectorAll('.calendar-type-btn');
+            switchBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    switchBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    // TODO: 阴历阳历转换逻辑
+                });
+            });
+        }
+        
+        // 当前请求数据（用于刷新）
+        let currentRequestData = null;
+        
+        // 处理提交
+        async function handleSubmit() {
+            const loading = document.getElementById('loadingOverlay');
+            const resultSection = document.getElementById('resultSection');
+            
+            // 获取输入值
+            const year = parseInt(document.getElementById('year').value);
+            const month = parseInt(document.getElementById('month').value);
+            const day = parseInt(document.getElementById('day').value);
+            const hour = parseInt(document.getElementById('hourSelect').value);
+            const gender = document.querySelector('.gender-btn.active').dataset.value;
+            let prayerFocus = document.querySelector('.prayer-btn.active').dataset.value;
+            const recentEvents = document.getElementById('recentEvents').value.trim();
+            
+            // 如果选择"其他"，使用自定义输入
+            if (prayerFocus === 'custom') {
+                prayerFocus = document.getElementById('customPrayerText').value.trim() || '其他';
+            }
+            
+            // 保存请求数据
+            currentRequestData = {
+                year,
+                month,
+                day,
+                hour,
+                gender,
+                prayer_focus: prayerFocus || null,
+                location: null  // 去掉地区输入
+            };
+            
+            loading.classList.add('show');
+            resultSection.classList.remove('show');
+            
+            await performMatch(currentRequestData);
+        }
+        
+        // 执行匹配请求
+        async function performMatch(requestData) {
+            const loading = document.getElementById('loadingOverlay');
+            const resultSection = document.getElementById('resultSection');
+            
+            loading.classList.add('show');
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/match`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('请求失败');
+                }
+                
+                const data = await response.json();
+                displayResult(data);
+                
+                // 滚动到结果区域
+                setTimeout(() => {
+                    resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+                
+            } catch (err) {
+                alert('发生错误：' + err.message);
+            } finally {
+                loading.classList.remove('show');
+            }
+        }
+        
+        // 刷新推荐
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+            if (currentRequestData) {
+                // 添加随机种子，让结果不同
+                currentRequestData.seed = Math.floor(Math.random() * 10000);
+                performMatch(currentRequestData);
+            }
+        });
+        
+        // 显示结果
+        function displayResult(data) {
+            const resultSection = document.getElementById('resultSection');
+            
+            // 基本信息
+            const baziHeader = document.getElementById('baziHeader');
+            if (data.bazi && data.bazi.基本信息) {
+                baziHeader.innerHTML = `
+                    <div class="bazi-info-item">
+                        <div class="label">公历</div>
+                        <div class="value">${data.bazi.基本信息.公历.split(' ')[0]}</div>
+                    </div>
+                    <div class="bazi-info-item">
+                        <div class="label">农历</div>
+                        <div class="value">${data.bazi.基本信息.农历}</div>
+                    </div>
+                    <div class="bazi-info-item">
+                        <div class="label">生肖</div>
+                        <div class="value">${data.bazi.基本信息.生肖}</div>
+                    </div>
+                    <div class="bazi-info-item">
+                        <div class="label">星座</div>
+                        <div class="value">${data.bazi.基本信息.星座}</div>
+                    </div>
+                `;
+            }
+            
+            // 八字四柱
+            const baziPillars = document.getElementById('baziPillars');
+            if (data.bazi && data.bazi.八字) {
+                baziPillars.innerHTML = `
+                    <div class="pillar-item">
+                        <div class="label">年柱</div>
+                        <div class="value">${data.bazi.八字.年柱}</div>
+                    </div>
+                    <div class="pillar-item">
+                        <div class="label">月柱</div>
+                        <div class="value">${data.bazi.八字.月柱}</div>
+                    </div>
+                    <div class="pillar-item">
+                        <div class="label">日柱</div>
+                        <div class="value">${data.bazi.八字.日柱}</div>
+                    </div>
+                    <div class="pillar-item">
+                        <div class="label">时柱</div>
+                        <div class="value">${data.bazi.八字.时柱}</div>
+                    </div>
+                `;
+            }
+            
+            // 五行
+            const wuxingGrid = document.getElementById('wuxingGrid');
+            if (data.wuxing) {
+                wuxingGrid.innerHTML = '';
+                for (const [wuxing, count] of Object.entries(data.wuxing)) {
+                    const item = document.createElement('div');
+                    item.className = `wuxing-item wuxing-${wuxing}`;
+                    if (data.weakest && wuxing === data.weakest) {
+                        item.classList.add('weakest');
+                    }
+                    item.innerHTML = `<div>${wuxing}</div><div>${count}</div>`;
+                    wuxingGrid.appendChild(item);
+                }
+            }
+            
+            // 寺庙列表
+            const templesList = document.getElementById('templesList');
+            const categoryIcons = {
+                "知名古刹": "🏛️",
+                "地方寺庙": "🏯",
+                "民间传说": "📖"
+            };
+            
+            if (data.temples && data.temples.length > 0) {
+                templesList.innerHTML = '';
+                data.temples.forEach((temple, index) => {
+                    const category = temple.temple_category || "地方寺庙";
+                    const card = document.createElement('div');
+                    card.className = 'temple-card';
+                    
+                    const hasStory = temple.historical_stories && temple.historical_stories.length > 0;
+                    
+                    card.innerHTML = `
+                        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
+                            <h3 style="font-size:17px;color:var(--text);margin:0;">${index + 1}. ${temple.name}</h3>
+                            <span style="font-size:12px;padding:4px 8px;background:#F2F2F7;border-radius:4px;color:var(--text-secondary);">${categoryIcons[category] || '🏯'} ${category}</span>
+                        </div>
+                        <div class="temple-meta">
+                            <span class="temple-tag">${temple.type}</span>
+                            <span class="temple-tag">${temple.subtype}</span>
+                            <span class="temple-tag">${'⭐'.repeat(Math.floor(temple.rating || 0))}</span>
+                        </div>
+                        <div class="temple-info" style="margin-bottom:8px;">
+                            📍 ${temple.province}${temple.city}${temple.district || ''}
+                        </div>
+                        <div class="temple-info">
+                            ${temple.description || ''}
+                        </div>
+                        ${hasStory ? `
+                            <div style="margin-top:8px;padding:8px;background:#FFF8E1;border-radius:6px;font-size:12px;color:#F57F17;">
+                                📜 ${temple.historical_stories[0].title || '历史传说'}
+                            </div>
+                        ` : ''}
+                        <div class="match-badge" style="margin-top:10px;">文化契合度：${temple.match_score || 0}分</div>
+                        <div class="expand-btn" onclick="this.nextElementSibling.classList.toggle('show')">💡 为什么推荐这里</div>
+                        <div class="expand-content">
+                            <strong>推荐理由：</strong><br>
+                            ${temple.match_reason || ''}<br><br>
+                            <strong>文化价值：</strong><br>
+                            ${temple.cultural_values ? temple.cultural_values.join('、') : '地方文化遗产'}<br><br>
+                            <strong>适合祈福：</strong><br>
+                            ${temple.prayer_focus ? temple.prayer_focus.join('、') : '平安、健康'}
+                        </div>
+                    `;
+                    templesList.appendChild(card);
+                });
+            }
+            
+            // 法器/佩戴建议列表
+            const faqiList = document.getElementById('faqiList');
+            if (data.faqi && data.faqi.length > 0) {
+                faqiList.innerHTML = '';
+                data.faqi.forEach((faqi, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'faqi-card';
+                    
+                    card.innerHTML = `
+                        <h4>${index + 1}. ${faqi.name}</h4>
+                        <div>
+                            <span class="wear-tag">${faqi.wear_method || '佩戴'}</span>
+                            <span class="wear-position">📍 ${faqi.wear_position || '随身'}</span>
+                        </div>
+                        <div class="description">${faqi.description || ''}</div>
+                        <div class="reason">
+                            💡 <strong>为什么推荐：</strong><br>
+                            ${faqi.reason || '传统五行文化认为这有助于补充你的能量'}
+                        </div>
+                        <div class="wear-detail">
+                            📖 <strong>佩戴/摆放方式：</strong><br>
+                            ${faqi.wear_detail || '建议随身佩戴或放在身边'}
+                        </div>
+                    `;
+                    faqiList.appendChild(card);
+                });
+            }
+            
+            resultSection.classList.add('show');
+        }
+    </script>
+</body>
+</html>
