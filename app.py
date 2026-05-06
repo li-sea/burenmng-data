@@ -197,64 +197,72 @@ def generate_cultural_reason(temple, weakest_wuxing, prayer_focus):
     """
     reasons = []
     
-    # 1. 历史年代/古老程度
-    history = temple.get("history", "")
     features = temple.get("features", [])
     description = temple.get("description", "")
+    temple_type = temple.get("type", "")
+    temple_subtype = temple.get("subtype", "")
+    rating = temple.get('rating', 0)
+    province = temple.get('province', '')
+    city = temple.get('city', '')
     
-    # 检查是否有历史年代信息
-    if "1700 年" in history or "西晋" in history:
+    # 1. 检查 features 中的特色标签
+    features_str = ' '.join(features) if isinstance(features, list) else str(features)
+    
+    if "1700 年" in features_str or "西晋" in features_str:
         reasons.append("北京最古寺院，1700 年历史见证朝代更迭")
-    elif "唐代" in history or "唐朝" in history:
+    elif "唐代" in features_str or "唐朝" in features_str:
         reasons.append("唐代古刹，千年历史传承")
-    elif "宋代" in history or "宋朝" in history:
+    elif "宋代" in features_str or "宋朝" in features_str:
         reasons.append("宋代古寺，千年文化积淀")
-    elif "明代" in history or "明朝" in history:
+    elif "明代" in features_str or "明朝" in features_str:
         reasons.append("明代古建，历史风貌保存完好")
-    elif "清代" in history or "清朝" in history:
-        reasons.append("清代皇家寺院，历史底蕴深厚")
-    elif "东晋" in history:
+    elif "清代" in features_str or "清朝" in features_str:
+        reasons.append("清代寺院，历史底蕴深厚")
+    elif "东晋" in features_str:
         reasons.append("东晋古刹，1600 年历史传承")
-    elif "历史" in history and "年" in history:
-        import re
-        match = re.search(r'(\d+) 年', history)
-        if match:
-            years = match.group(1)
-            reasons.append(f"{years}年历史古刹")
+    elif "古刹" in features_str or "古寺" in features_str:
+        reasons.append("历史古刹，文化传承悠久")
     
     # 2. 皇家/官方背景
-    if "皇家" in description or "皇家" in str(features) or "敕建" in history:
+    if "皇家" in features_str or "皇家" in description:
         reasons.append("皇家寺院，历代帝王祈福之地")
-    elif "世界文化" in description or "世界遗产" in description or "世界文化" in str(features):
+    elif "世界文化" in features_str or "世界遗产" in description:
         reasons.append("世界文化遗产，人类文明瑰宝")
-    elif "5A" in description or "5A" in str(features):
+    elif "5A" in features_str or "5A" in description:
         reasons.append("5A 级景区，国家级文化地标")
-    elif "4A" in description or "4A" in str(features):
+    elif "4A" in features_str or "4A" in description:
         reasons.append("4A 级景区，地方文化名片")
-    elif "全国重点" in description or "国保" in description:
-        reasons.append("全国重点文物保护单位")
+    elif "著名" in features_str or "知名" in features_str:
+        reasons.append("地方著名寺庙，香火鼎盛")
     
-    # 3. 宗派/祖庭地位
-    if "祖庭" in description or "祖庭" in history:
+    # 3. 宗派特色
+    if "祖庭" in features_str or "祖庭" in description:
         reasons.append("佛教祖庭，宗派发源地")
-    elif "净土宗" in description or "净土宗" in history:
+    elif "净土宗" in features_str or "净土宗" in description:
         reasons.append("净土宗祖庭，佛教圣地")
-    elif "禅宗" in description or "禅宗" in history:
+    elif "禅宗" in features_str or "禅宗" in description:
         reasons.append("禅宗名刹，高僧辈出")
-    elif "道教" in temple.get("type", "") and "名观" in description:
+    elif temple_type == "道教" and "名观" in description:
         reasons.append("道教名观，修仙圣地")
     
-    # 4. 当地传说/俗语
-    if "先有潭柘寺" in history or "后有北京城" in history:
-        reasons.append("民间有'先有潭柘寺，后有北京城'之说")
-    elif "传说" in history or "神话" in history:
-        reasons.append("当地传说丰富，文化底蕴深厚")
+    # 4. 地理位置特色
+    if province:
+        if "北京" in province:
+            reasons.append("京城古刹，历史文化中心")
+        elif "西藏" in province:
+            reasons.append("藏传佛教圣地，雪域高原")
+        elif "山西" in province:
+            reasons.append("三晋大地，佛教文化发源地之一")
+        elif "浙江" in province:
+            reasons.append("江南名刹，水乡佛国")
     
-    # 5. 建筑特色
-    if "木结构" in description or "古建" in description:
-        reasons.append("古建筑艺术精湛")
-    elif "佛像" in description and "最大" in description:
-        reasons.append("拥有著名佛像，香火鼎盛")
+    # 5. 建筑/文化特色
+    if "净" in features_str and "土" in features_str:
+        reasons.append("净土宗祖庭，佛教圣地")
+    if "观音" in features_str:
+        reasons.append("观音道场，慈悲普度")
+    if "财神" in features_str:
+        reasons.append("财神庙宇，招财进宝")
     
     # 6. 五行匹配（简化版，放在最后）
     wuxing_meaning = {"木": "生机发展", "火": "热情活力", "土": "稳定包容", "金": "坚定清晰", "水": "智慧流动"}
@@ -265,14 +273,21 @@ def generate_cultural_reason(temple, weakest_wuxing, prayer_focus):
         cultural_reason = "，".join(reasons[:2])  # 最多 2 条文化特色
         final_reason = f"{cultural_reason}。五行{weakest_wuxing}属性，象征{wuxing_text}"
     else:
-        final_reason = f"传统五行文化中，{weakest_wuxing}代表{wuxing_text}"
+        # 没有特殊文化，用通用模板但也尽量差异化
+        if temple_type == "佛教":
+            final_reason = f"佛教寺院，清净庄严。五行{weakest_wuxing}属性，象征{wuxing_text}"
+        elif temple_type == "道教":
+            final_reason = f"道教宫观，修身养性。五行{weakest_wuxing}属性，象征{wuxing_text}"
+        elif temple_type == "文庙":
+            final_reason = f"文庙学府，文运昌盛。五行{weakest_wuxing}属性，象征{wuxing_text}"
+        else:
+            final_reason = f"传统五行文化中，{weakest_wuxing}代表{wuxing_text}"
     
     # 添加祈福主题（如果有）
     if prayer_focus:
         final_reason += f"，有助于{prayer_focus}"
     
     # 添加文化评级
-    rating = temple.get('rating', 0)
     final_reason += f"，文化评级{rating}⭐"
     
     return final_reason
