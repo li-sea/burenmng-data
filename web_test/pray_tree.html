@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>🌳 祈福树 - 不认命</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        :root {
+            --primary: #4CAF50;
+            --primary-dark: #388E3C;
+            --bg: #F5F5F5;
+            --card-bg: white;
+            --text: #333;
+            --text-secondary: #666;
+            --border: #E0E0E0;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #F44336;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            padding: 0;
+            color: var(--text);
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .navbar-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        /* 主容器 */
+        .container {
+            padding: 70px 16px 100px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* 底部导航 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: white;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            z-index: 1000;
+        }
+        
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .nav-item.active {
+            color: var(--primary);
+        }
+        
+        .nav-item .icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .nav-item .label {
+            font-size: 12px;
+        }
+        
+        /* 卡片 */
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+        
+        /* 种树表单 */
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .prayer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        
+        .prayer-btn {
+            padding: 12px 8px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        
+        .prayer-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .prayer-btn .icon {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .input-group {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        .input-group textarea {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            color: var(--text);
+            resize: none;
+            min-height: 80px;
+            font-family: inherit;
+        }
+        
+        .input-group textarea::placeholder {
+            color: #999;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+        
+        /* 树卡片 */
+        .tree-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        .tree-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .tree-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .tree-level {
+            font-size: 14px;
+            color: var(--primary);
+        }
+        
+        .tree-wish {
+            font-size: 14px;
+            color: var(--text);
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        
+        .tree-progress {
+            background: #E8F5E9;
+            border-radius: 8px;
+            height: 8px;
+            margin-bottom: 8px;
+            overflow: hidden;
+        }
+        
+        .tree-progress-bar {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 8px;
+            transition: width 0.3s;
+        }
+        
+        .tree-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .tree-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .tree-btn {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: white;
+            font-size: 14px;
+            color: var(--text);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        
+        .tree-btn.primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* 祈福广场 */
+        .square-tree {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        .square-tree-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .square-tree-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            margin-right: 12px;
+        }
+        
+        .square-tree-info {
+            flex: 1;
+        }
+        
+        .square-tree-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .square-tree-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        /* 分享卡片 */
+        .share-card {
+            width: 320px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 24px;
+            color: white;
+            text-align: center;
+        }
+        
+        .share-card-tree {
+            font-size: 48px;
+            margin: 16px 0;
+        }
+        
+        .share-card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .share-card-wish {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+        
+        .share-card-stats {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .share-card-stat {
+            text-align: center;
+        }
+        
+        .share-card-stat-value {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .share-card-stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .share-card-cta {
+            background: white;
+            color: #667eea;
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        /* 页面切换 */
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* 加载状态 */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+        
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid var(--border);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 16px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <div class="navbar">
+        <div class="navbar-title">🌳 祈福树</div>
+    </div>
+    
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 种树页面 -->
+        <div class="page active" id="page-create">
+            <div class="card">
+                <div class="card-title">🌱 种一棵祈福树</div>
+                
+                <div class="form-group">
+                    <label class="form-label">选择祈福方向</label>
+                    <div class="prayer-grid" id="prayerGrid">
+                        <div class="prayer-btn" data-value="事业">
+                            <span class="icon">💼</span>
+                            事业
+                        </div>
+                        <div class="prayer-btn" data-value="财运">
+                            <span class="icon">💰</span>
+                            财运
+                        </div>
+                        <div class="prayer-btn" data-value="姻缘">
+                            <span class="icon">💕</span>
+                            姻缘
+                        </div>
+                        <div class="prayer-btn" data-value="健康">
+                            <span class="icon">💪</span>
+                            健康
+                        </div>
+                        <div class="prayer-btn" data-value="平安">
+                            <span class="icon">🙏</span>
+                            平安
+                        </div>
+                        <div class="prayer-btn" data-value="学业">
+                            <span class="icon">📚</span>
+                            学业
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">写下心愿</label>
+                    <div class="input-group">
+                        <textarea id="wishInput" placeholder="例如：事业顺利，升职加薪"></textarea>
+                    </div>
+                </div>
+                
+                <button class="submit-btn" id="createBtn">🌱 种下祈福树</button>
+            </div>
+        </div>
+        
+        <!-- 我的树页面 -->
+        <div class="page" id="page-my">
+            <div id="myTreesList"></div>
+        </div>
+        
+        <!-- 祈福广场页面 -->
+        <div class="page" id="page-square">
+            <div class="card">
+                <div class="card-title">🙏 祈福广场</div>
+                <p style="font-size:14px;color:var(--text-secondary);margin-bottom:12px;">
+                    帮别人的树点个赞，一起随喜！🙏
+                </p>
+            </div>
+            <div id="squareList"></div>
+        </div>
+        
+        <!-- 分享页面 -->
+        <div class="page" id="page-share">
+            <div class="card">
+                <div class="card-title">📤 分享祈福树</div>
+                <div id="sharePreview"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部导航 -->
+    <div class="bottom-nav">
+        <div class="nav-item active" data-page="create">
+            <span class="icon">🌱</span>
+            <span class="label">种树</span>
+        </div>
+        <div class="nav-item" data-page="my">
+            <span class="icon">🌳</span>
+            <span class="label">我的树</span>
+        </div>
+        <div class="nav-item" data-page="square">
+            <span class="icon">🙏</span>
+            <span class="label">祈福广场</span>
+        </div>
+        <div class="nav-item" data-page="share">
+            <span class="icon">📤</span>
+            <span class="label">分享</span>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE = 'https://burenmng-data.onrender.com';
+        const USER_ID = 'user_' + Math.random().toString(36).substr(2, 8);
+        
+        // 页面切换
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const page = item.dataset.page;
+                switchPage(page);
+            });
+        });
+        
+        function switchPage(page) {
+            // 更新导航
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.page === page);
+            });
+            
+            // 更新页面
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.toggle('active', p.id === `page-${page}`);
+            });
+            
+            // 加载数据
+            if (page === 'my') {
+                loadMyTrees();
+            } else if (page === 'square') {
+                loadSquare();
+            } else if (page === 'share') {
+                loadSharePreview();
+            }
+        }
+        
+        // 祈福方向选择
+        document.querySelectorAll('.prayer-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.prayer-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+        
+        // 种树
+        document.getElementById('createBtn').addEventListener('click', async () => {
+            const prayerFocus = document.querySelector('.prayer-btn.active');
+            const wish = document.getElementById('wishInput').value.trim();
+            
+            if (!prayerFocus) {
+                alert('请选择祈福方向');
+                return;
+            }
+            
+            if (!wish) {
+                alert('请输入心愿');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/pray-tree/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        user_id: USER_ID,
+                        prayer_focus: prayerFocus.dataset.value,
+                        wish: wish
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    alert('🌱 祈福树种下成功！\n\n快分享给好友，邀请他们来点赞吧！');
+                    document.getElementById('wishInput').value = '';
+                    document.querySelectorAll('.prayer-btn').forEach(b => b.classList.remove('active'));
+                    switchPage('my');
+                }
+            } catch (err) {
+                alert('种树失败：' + err.message);
+            }
+        });
+        
+        // 加载我的树
+        async function loadMyTrees() {
+            const list = document.getElementById('myTreesList');
+            list.innerHTML = '<div class="loading"><div class="spinner"></div>加载中...</div>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/pray-tree/user/${USER_ID}`);
+                const data = await response.json();
+                
+                if (data.trees.length === 0) {
+                    list.innerHTML = `
+                        <div class="empty-state">
+                            <div class="icon">🌱</div>
+                            <p>还没有种树</p>
+                            <p style="font-size:14px;margin-top:8px;">去种一棵祈福树吧！</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                list.innerHTML = '';
+                data.trees.forEach(tree => {
+                    const card = document.createElement('div');
+                    card.className = 'tree-card';
+                    card.innerHTML = `
+                        <div class="tree-header">
+                            <div class="tree-title">${tree.prayer_emoji} ${tree.prayer_focus}</div>
+                            <div class="tree-level">Lv.${tree.level}</div>
+                        </div>
+                        <div class="tree-wish">${tree.wish}</div>
+                        <div class="tree-progress">
+                            <div class="tree-progress-bar" style="width:${tree.level * 10}%"></div>
+                        </div>
+                        <div class="tree-stats">
+                            <span>${tree.tree_emoji} ${tree.status_text}</span>
+                            <span>👍 ${tree.likes} 个赞</span>
+                            <span>还需 ${tree.need_likes} 个赞开花</span>
+                        </div>
+                        <div class="tree-actions">
+                            <button class="tree-btn" onclick="shareTree('${tree.tree_id}')">📤 分享</button>
+                            <button class="tree-btn" onclick="likeMyTree('${tree.tree_id}')">👍 求赞</button>
+                        </div>
+                    `;
+                    list.appendChild(card);
+                });
+            } catch (err) {
+                list.innerHTML = `<div class="empty-state"><p>加载失败：${err.message}</p></div>`;
+            }
+        }
+        
+        // 加载祈福广场
+        async function loadSquare() {
+            const list = document.getElementById('squareList');
+            list.innerHTML = '<div class="loading"><div class="spinner"></div>加载中...</div>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/api/pray-tree/random?limit=20`);
+                const data = await response.json();
+                
+                if (data.trees.length === 0) {
+                    list.innerHTML = `
+                        <div class="empty-state">
+                            <div class="icon">🌳</div>
+                            <p>还没有人种树</p>
+                            <p style="font-size:14px;margin-top:8px;">去种第一棵树吧！</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                list.innerHTML = '';
+                data.trees.forEach(tree => {
+                    const card = document.createElement('div');
+                    card.className = 'square-tree';
+                    card.innerHTML = `
+                        <div class="square-tree-header">
+                            <div class="square-tree-avatar">${tree.prayer_emoji}</div>
+                            <div class="square-tree-info">
+                                <div class="square-tree-name">${tree.prayer_focus}祈福</div>
+                                <div class="square-tree-time">${tree.status_text} · Lv.${tree.level}</div>
+                            </div>
+                        </div>
+                        <div class="tree-wish">${tree.wish}</div>
+                        <div class="tree-progress">
+                            <div class="tree-progress-bar" style="width:${tree.level * 10}%"></div>
+                        </div>
+                        <div class="tree-stats">
+                            <span>👍 ${tree.likes} 个赞</span>
+                            <span>${tree.tree_emoji}</span>
+                        </div>
+                        <button class="tree-btn primary" style="margin-top:12px;" onclick="likeTree('${tree.tree_id}')">
+                            🙏 随喜点赞
+                        </button>
+                    `;
+                    list.appendChild(card);
+                });
+            } catch (err) {
+                list.innerHTML = `<div class="empty-state"><p>加载失败：${err.message}</p></div>`;
+            }
+        }
+        
+        // 点赞
+        async function likeTree(treeId) {
+            try {
+                const response = await fetch(`${API_BASE}/api/pray-tree/like`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        tree_id: treeId,
+                        liker_id: USER_ID
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    alert('🙏 点赞成功！感谢随喜！');
+                    loadSquare();
+                }
+            } catch (err) {
+                alert('点赞失败：' + err.message);
+            }
+        }
+        
+        // 分享树
+        async function shareTree(treeId) {
+            try {
+                const response = await fetch(`${API_BASE}/api/pray-tree/${treeId}/share`, {
+                    method: 'POST'
+                });
+                
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    // 生成分享链接
+                    const shareUrl = `${window.location.origin}/pray/${treeId}`;
+                    
+                    // 复制到剪贴板
+                    navigator.clipboard.writeText(shareUrl).then(() => {
+                        alert('📤 分享链接已复制！\n\n' + shareUrl + '\n\n快分享给好友，邀请他们来点赞吧！');
+                    }).catch(() => {
+                        prompt('分享链接：', shareUrl);
+                    });
+                }
+            } catch (err) {
+                alert('分享失败：' + err.message);
+            }
+        }
+        
+        // 求赞
+        function likeMyTree(treeId) {
+            shareTree(treeId);
+        }
+        
+        // 加载分享预览
+        async function loadSharePreview() {
+            const preview = document.getElementById('sharePreview');
+            
+            // 获取用户的树
+            try {
+                const response = await fetch(`${API_BASE}/api/pray-tree/user/${USER_ID}`);
+                const data = await response.json();
+                
+                if (data.trees.length === 0) {
+                    preview.innerHTML = `
+                        <div class="empty-state">
+                            <div class="icon">📤</div>
+                            <p>还没有可分享的树</p>
+                            <p style="font-size:14px;margin-top:8px;">去种一棵祈福树吧！</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const tree = data.trees[0];
+                
+                preview.innerHTML = `
+                    <div class="share-card">
+                        <div class="share-card-tree">${tree.tree_emoji}</div>
+                        <div class="share-card-title">${tree.prayer_focus}祈福</div>
+                        <div class="share-card-wish">${tree.wish}</div>
+                        <div class="share-card-stats">
+                            <div class="share-card-stat">
+                                <div class="share-card-stat-value">${tree.likes}</div>
+                                <div class="share-card-stat-label">个赞</div>
+                            </div>
+                            <div class="share-card-stat">
+                                <div class="share-card-stat-value">Lv.${tree.level}</div>
+                                <div class="share-card-stat-label">${tree.status_text}</div>
+                            </div>
+                        </div>
+                        <div class="share-card-cta">你也来种一棵 →</div>
+                    </div>
+                    <button class="submit-btn" style="margin-top:16px;" onclick="shareTree('${tree.tree_id}')">
+                        📤 分享祈福树
+                    </button>
+                `;
+            } catch (err) {
+                preview.innerHTML = `<div class="empty-state"><p>加载失败：${err.message}</p></div>`;
+            }
+        }
+        
+        // 初始化
+        loadMyTrees();
+    </script>
+</body>
+</html>
