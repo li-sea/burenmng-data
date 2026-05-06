@@ -1093,7 +1093,24 @@
             loading.classList.add('show');
             
             try {
-                const response = await fetch(`${API_BASE}/api/match`, {
+                // Redirect to result page with user data
+const params = new URLSearchParams({
+    name: name,
+    gender: gender,
+    year: year,
+    month: month,
+    day: day,
+    hour: hour,
+    calendarType: calendarType,
+    prayerFocus: prayerFocus || '',
+    recentEvents: recentEvents || ''
+});
+
+window.location.href = `./result.html?${params.toString()}`;
+return; // Don't call API here
+
+/* Original API call disabled - now redirects to result page
+const response = await fetch(`${API_BASE}/api/match`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
