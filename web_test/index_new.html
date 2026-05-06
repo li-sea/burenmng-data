@@ -300,6 +300,10 @@
             <div class="card">
                 <div class="card-title">出生信息</div>
                 
+                <div style="padding: 8px 12px; border-bottom: 0.5px solid var(--border);">
+                    <input type="text" id="nameInput" placeholder="请输入姓名" style="width: 100%; border: none; outline: none; font-size: 16px; background: transparent; padding: 8px 0;" />
+                </div>
+                
                 <div class="switch">
                     <div class="switch-btn active" onclick="setCalendarType('solar')">阳历</div>
                     <div class="switch-btn" onclick="setCalendarType('lunar')">阴历</div>
@@ -497,9 +501,16 @@
         }
         
         async function calculate() {
+            const name = document.getElementById('nameInput').value.trim();
             const year = parseInt(document.getElementById('yearSelect').value);
             const month = parseInt(document.getElementById('monthSelect').value);
             const day = parseInt(document.getElementById('daySelect').value);
+            
+            // 验证：姓名和出生年月日必须填写
+            if (!name || year === 1990 || month === 5 || day === 15) {
+                // 不满足条件，不执行任何操作（静默）
+                return;
+            }
             
             document.getElementById('input-section').style.display = 'none';
             document.getElementById('loading').style.display = 'block';
@@ -521,7 +532,7 @@
                 if (!response.ok) throw new Error('API 请求失败');
                 
                 const result = await response.json();
-                showResult(result, { year, month, day });
+                showResult(result, { name, year, month, day });
                 
             } catch (error) {
                 alert('加载失败，请稍后重试');
