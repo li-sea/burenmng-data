@@ -25,9 +25,6 @@
             --text: #1C1C1E;
             --text-secondary: #8E8E93;
             --border: #E5E5EA;
-            --success: #34C759;
-            --warning: #FF9500;
-            --danger: #FF3B30;
         }
         
         body {
@@ -62,86 +59,94 @@
             color: var(--text);
         }
         
-        /* 主容器 */
+        /* 主容器 - 减少 padding */
         .container {
-            padding: 60px 16px 100px;
+            padding: 52px 12px 60px;
             max-width: 600px;
             margin: 0 auto;
         }
         
-        /* 卡片样式 */
+        /* 卡片样式 - 减少 padding */
         .card {
             background: var(--card-bg);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
         }
         
         .card-title {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 12px;
-        }
-        
-        /* 表单组 */
-        .form-group {
-            margin-bottom: 16px;
-        }
-        
-        .form-label {
-            font-size: 17px;
-            color: var(--text);
             margin-bottom: 8px;
-            font-weight: 400;
         }
         
-        /* iOS 风格输入框 */
-        .input-group {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        .input-item {
+        /* 日历切换 - 紧凑 */
+        .calendar-type-switch {
             display: flex;
-            align-items: center;
-            padding: 12px 16px;
-            border-bottom: 0.5px solid var(--border);
+            background: #E5E5EA;
+            border-radius: 6px;
+            padding: 2px;
+            margin: 0 8px 8px;
         }
         
-        .input-item:last-child {
-            border-bottom: none;
-        }
-        
-        .input-item label {
+        .calendar-type-btn {
             flex: 1;
-            font-size: 17px;
+            padding: 5px;
+            text-align: center;
+            font-size: 13px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .calendar-type-btn.active {
+            background: white;
             color: var(--text);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
         
-        .input-item input {
-            border: none;
-            outline: none;
-            font-size: 17px;
-            text-align: right;
-            color: var(--primary);
-            width: 120px;
-            background: transparent;
-        }
-        
-        .input-item input::placeholder {
+        .calendar-type-btn:not(.active) {
             color: var(--text-secondary);
         }
         
-        /* 日期选择器 */
+        /* 性别选择 - 紧凑 */
+        .gender-switch {
+            display: flex;
+            background: #E5E5EA;
+            border-radius: 6px;
+            padding: 2px;
+            margin: 0 8px 8px;
+        }
+        
+        .gender-btn {
+            flex: 1;
+            padding: 6px;
+            text-align: center;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .gender-btn.active {
+            background: white;
+            color: var(--text);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gender-btn:not(.active) {
+            color: var(--text-secondary);
+        }
+        
+        /* 日期选择 - 紧凑 */
         .date-row {
             display: flex;
             justify-content: space-between;
-            padding: 12px 16px;
+            padding: 8px 12px;
             border-bottom: 0.5px solid var(--border);
         }
         
@@ -158,112 +163,33 @@
             width: 100%;
             border: none;
             background: transparent;
-            font-size: 17px;
+            font-size: 16px;
             color: var(--primary);
             text-align: center;
             outline: none;
+            padding: 4px 0;
         }
         
         .date-col label {
             display: block;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-secondary);
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         
-        /* 生肖显示 */
-        .zodiac-display {
-            background: white;
-            border-radius: 10px;
-            padding: 12px 16px;
-            margin-top: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .zodiac-label {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-        
-        .zodiac-value {
-            font-size: 17px;
-            font-weight: 600;
-            color: var(--primary);
-        }
-        
-        /* 日历切换 */
-        .calendar-type-switch {
-            display: flex;
-            background: #E5E5EA;
-            border-radius: 8px;
-            padding: 2px;
-            margin: 0 16px 12px;
-        }
-        
-        .calendar-type-btn {
-            flex: 1;
-            padding: 6px;
-            text-align: center;
-            font-size: 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .calendar-type-btn.active {
-            background: white;
-            color: var(--text);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        
-        .calendar-type-btn:not(.active) {
-            color: var(--text-secondary);
-        }
-        
-        /* 性别选择 */
-        .gender-switch {
-            display: flex;
-            background: #E5E5EA;
-            border-radius: 8px;
-            padding: 2px;
-        }
-        
-        .gender-btn {
-            flex: 1;
-            padding: 8px;
-            text-align: center;
-            font-size: 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .gender-btn.active {
-            background: white;
-            color: var(--text);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        
-        .gender-btn:not(.active) {
-            color: var(--text-secondary);
-        }
-        
-        /* 时辰选择 */
+        /* 时辰选择 - 紧凑网格 */
         .hour-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            padding: 12px 16px;
+            gap: 6px;
+            padding: 8px 12px;
         }
         
         .hour-btn {
-            padding: 8px 4px;
+            padding: 6px 2px;
             background: #F2F2F7;
-            border-radius: 6px;
+            border-radius: 5px;
             text-align: center;
-            font-size: 13px;
             cursor: pointer;
             border: 2px solid transparent;
         }
@@ -275,28 +201,52 @@
         
         .hour-btn .hour-name {
             display: block;
+            font-size: 12px;
             font-weight: 600;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
         
         .hour-btn .hour-time {
             display: block;
-            font-size: 11px;
+            font-size: 10px;
             opacity: 0.8;
         }
         
-        /* 祈福方向 */
+        /* 生肖显示 - 紧凑 */
+        .zodiac-display {
+            background: white;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 0.5px solid var(--border);
+        }
+        
+        .zodiac-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .zodiac-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        /* 祈福方向 - 紧凑 */
         .prayer-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            padding: 12px 16px;
+            gap: 8px;
+            padding: 8px 12px;
         }
         
         .prayer-btn {
-            padding: 16px 8px;
+            padding: 10px 4px;
             background: #F2F2F7;
-            border-radius: 10px;
+            border-radius: 8px;
             text-align: center;
             cursor: pointer;
             border: 2px solid transparent;
@@ -310,62 +260,57 @@
         }
         
         .prayer-btn .prayer-icon {
-            font-size: 24px;
-            margin-bottom: 6px;
+            font-size: 20px;
+            margin-bottom: 4px;
         }
         
         .prayer-btn .prayer-label {
-            font-size: 13px;
+            font-size: 12px;
         }
         
-        /* 最近发生的事 */
+        /* 输入框 - 紧凑 */
         .textarea-container {
-            padding: 12px 16px;
+            padding: 8px 12px;
         }
         
         .textarea-container textarea {
             width: 100%;
-            min-height: 80px;
+            min-height: 60px;
             border: none;
             outline: none;
-            font-size: 15px;
+            font-size: 14px;
             font-family: inherit;
             resize: vertical;
             background: transparent;
         }
         
-        /* 提交按钮 */
+        /* 提交按钮 - 紧凑 */
         .submit-btn {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             background: var(--primary);
             color: white;
             text-align: center;
-            border-radius: 12px;
-            font-size: 17px;
+            border-radius: 10px;
+            font-size: 16px;
             font-weight: 600;
             border: none;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 12px;
         }
         
         .submit-btn:active {
             background: var(--primary-dark);
         }
         
-        .submit-btn:disabled {
-            background: var(--text-secondary);
-            cursor: not-allowed;
-        }
-        
-        /* 免责声明 */
+        /* 免责声明 - 紧凑 */
         .disclaimer {
-            margin-top: 20px;
-            padding: 16px;
+            margin-top: 12px;
+            padding: 12px;
             text-align: center;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-secondary);
-            line-height: 1.5;
+            line-height: 1.4;
         }
         
         /* 结果区域 */
@@ -373,75 +318,75 @@
             display: none;
         }
         
-        /* 八字展示 */
+        /* 八字展示 - 紧凑 */
         .bazi-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-bottom: 16px;
+            gap: 6px;
+            margin-bottom: 10px;
         }
         
         .bazi-item {
             text-align: center;
-            padding: 12px 8px;
+            padding: 8px 4px;
             background: white;
-            border-radius: 8px;
+            border-radius: 6px;
             border: 0.5px solid var(--border);
         }
         
         .bazi-label {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-secondary);
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         
         .bazi-value {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             color: var(--primary);
         }
         
-        /* 五行统计 */
+        /* 五行统计 - 紧凑 */
         .wuxing-bar {
             display: flex;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
         
         .wuxing-label {
-            width: 40px;
-            font-size: 14px;
+            width: 35px;
+            font-size: 13px;
             font-weight: 500;
         }
         
         .wuxing-track {
             flex: 1;
-            height: 8px;
+            height: 6px;
             background: #E5E5EA;
-            border-radius: 4px;
+            border-radius: 3px;
             overflow: hidden;
-            margin: 0 12px;
+            margin: 0 8px;
         }
         
         .wuxing-fill {
             height: 100%;
-            border-radius: 4px;
+            border-radius: 3px;
             transition: width 0.3s;
         }
         
         .wuxing-count {
-            width: 30px;
+            width: 25px;
             text-align: right;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
         }
         
-        /* 寺庙卡片 */
+        /* 寺庙卡片 - 紧凑 */
         .temple-card {
             background: white;
-            border-radius: 10px;
-            padding: 16px;
-            margin-bottom: 12px;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 8px;
             border: 0.5px solid var(--border);
         }
         
@@ -449,38 +394,36 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         
         .temple-name {
-            font-size: 17px;
+            font-size: 15px;
             font-weight: 600;
             color: var(--text);
         }
         
         .temple-location {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-secondary);
-            margin-top: 4px;
+            margin-top: 2px;
         }
         
         .temple-rating {
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            font-size: 12px;
         }
         
         .temple-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 12px;
+            gap: 4px;
+            margin-bottom: 8px;
         }
         
         .tag {
-            font-size: 12px;
-            padding: 4px 8px;
-            border-radius: 4px;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 3px;
             background: #F2F2F7;
             color: var(--text-secondary);
         }
@@ -492,70 +435,70 @@
         
         .match-badge {
             display: inline-block;
-            font-size: 12px;
-            padding: 4px 12px;
-            border-radius: 12px;
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 10px;
             background: var(--primary);
             color: white;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         
         .match-reason {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text);
-            line-height: 1.5;
-            padding: 12px;
+            line-height: 1.4;
+            padding: 8px;
             background: #F8F9FA;
-            border-radius: 8px;
-            margin-bottom: 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
         }
         
         .temple-details {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-secondary);
-            line-height: 1.6;
+            line-height: 1.5;
         }
         
         .temple-details strong {
             color: var(--text);
         }
         
-        /* 法器推荐 */
+        /* 法器推荐 - 紧凑 */
         .faqi-card {
             background: white;
-            border-radius: 10px;
-            padding: 16px;
-            margin-bottom: 12px;
-        }
-        
-        .faqi-name {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text);
+            border-radius: 8px;
+            padding: 10px;
             margin-bottom: 8px;
         }
         
+        .faqi-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+        
         .faqi-desc {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-secondary);
-            line-height: 1.5;
+            line-height: 1.4;
         }
         
         /* 加载动画 */
         .loading {
             text-align: center;
-            padding: 40px 20px;
+            padding: 30px 20px;
             display: none;
         }
         
         .loading-spinner {
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             border: 3px solid var(--border);
             border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 16px;
+            margin: 0 auto 12px;
         }
         
         @keyframes spin {
@@ -563,7 +506,7 @@
         }
         
         .loading-text {
-            font-size: 15px;
+            font-size: 14px;
             color: var(--text-secondary);
         }
         
@@ -571,20 +514,30 @@
         .retake-btn {
             display: block;
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             background: var(--text-secondary);
             color: white;
             text-align: center;
-            border-radius: 12px;
-            font-size: 17px;
+            border-radius: 10px;
+            font-size: 16px;
             font-weight: 600;
-            margin-top: 12px;
+            margin-top: 10px;
             border: none;
             cursor: pointer;
         }
         
         .retake-btn:active {
             opacity: 0.8;
+        }
+        
+        /* 用户信息 */
+        .user-info {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .user-info div {
+            margin-bottom: 4px;
         }
     </style>
 </head>
@@ -609,45 +562,34 @@
                 </div>
                 
                 <!-- 性别选择 -->
-                <div class="form-group">
-                    <div class="gender-switch">
-                        <div class="gender-btn active" onclick="setGender('male')">男</div>
-                        <div class="gender-btn" onclick="setGender('female')">女</div>
-                    </div>
+                <div class="gender-switch">
+                    <div class="gender-btn active" onclick="setGender('male')">男</div>
+                    <div class="gender-btn" onclick="setGender('female')">女</div>
                 </div>
                 
                 <!-- 日期选择 -->
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="date-row">
-                            <div class="date-col">
-                                <label>年</label>
-                                <select id="yearSelect" onchange="updateZodiac()"></select>
-                            </div>
-                            <div class="date-col">
-                                <label>月</label>
-                                <select id="monthSelect" onchange="updateZodiac()"></select>
-                            </div>
-                            <div class="date-col">
-                                <label>日</label>
-                                <select id="daySelect" onchange="updateZodiac()"></select>
-                            </div>
-                        </div>
-                        
-                        <!-- 生肖自动显示 -->
-                        <div class="zodiac-display">
-                            <span class="zodiac-label">生肖</span>
-                            <span class="zodiac-value" id="zodiacValue">-</span>
-                        </div>
+                <div class="date-row">
+                    <div class="date-col">
+                        <label>年</label>
+                        <select id="yearSelect" onchange="updateZodiac()"></select>
+                    </div>
+                    <div class="date-col">
+                        <label>月</label>
+                        <select id="monthSelect" onchange="updateZodiac()"></select>
+                    </div>
+                    <div class="date-col">
+                        <label>日</label>
+                        <select id="daySelect" onchange="updateZodiac()"></select>
                     </div>
                 </div>
                 
                 <!-- 时辰选择 -->
-                <div class="form-group">
-                    <div class="form-label">时辰</div>
-                    <div class="input-group">
-                        <div class="hour-grid" id="hourGrid"></div>
-                    </div>
+                <div class="hour-grid" id="hourGrid"></div>
+                
+                <!-- 生肖显示 -->
+                <div class="zodiac-display">
+                    <span class="zodiac-label">生肖</span>
+                    <span class="zodiac-value" id="zodiacValue">-</span>
                 </div>
             </div>
             
@@ -681,7 +623,7 @@
             <!-- 基本信息 -->
             <div class="card">
                 <div class="card-title">基本信息</div>
-                <div id="user-info"></div>
+                <div class="user-info" id="user-info"></div>
             </div>
             
             <!-- 八字结果 -->
@@ -694,7 +636,7 @@
             <div class="card">
                 <div class="card-title">五行分布</div>
                 <div id="wuxing-bars"></div>
-                <div id="weakest-wuxing" style="margin-top: 12px; font-size: 14px; color: var(--text-secondary);"></div>
+                <div id="weakest-wuxing" style="margin-top: 8px; font-size: 13px; color: var(--text-secondary);"></div>
             </div>
             
             <!-- 法器推荐 -->
@@ -724,7 +666,7 @@
         // 全局变量
         let calendarType = 'solar';
         let gender = 'male';
-        let selectedHour = 14; // 默认未时
+        let selectedHour = 13; // 默认未时
         let selectedPrayer = '全部';
         
         // 初始化
@@ -774,18 +716,18 @@
         // 初始化时辰选择
         function initHourGrid() {
             const hours = [
-                { name: '子时', time: '23-1', value: 23 },
-                { name: '丑时', time: '1-3', value: 1 },
-                { name: '寅时', time: '3-5', value: 3 },
-                { name: '卯时', time: '5-7', value: 5 },
-                { name: '辰时', time: '7-9', value: 7 },
-                { name: '巳时', time: '9-11', value: 9 },
-                { name: '午时', time: '11-13', value: 11 },
-                { name: '未时', time: '13-15', value: 13 },
-                { name: '申时', time: '15-17', value: 15 },
-                { name: '酉时', time: '17-19', value: 17 },
-                { name: '戌时', time: '19-21', value: 19 },
-                { name: '亥时', time: '21-23', value: 21 }
+                { name: '子', time: '23-1', value: 23 },
+                { name: '丑', time: '1-3', value: 1 },
+                { name: '寅', time: '3-5', value: 3 },
+                { name: '卯', time: '5-7', value: 5 },
+                { name: '辰', time: '7-9', value: 7 },
+                { name: '巳', time: '9-11', value: 9 },
+                { name: '午', time: '11-13', value: 11 },
+                { name: '未', time: '13-15', value: 13 },
+                { name: '申', time: '15-17', value: 15 },
+                { name: '酉', time: '17-19', value: 17 },
+                { name: '戌', time: '19-21', value: 19 },
+                { name: '亥', time: '21-23', value: 21 }
             ];
             
             const hourGrid = document.getElementById('hourGrid');
@@ -794,7 +736,7 @@
                 btn.className = 'hour-btn' + (hour.value === 13 ? ' active' : '');
                 btn.onclick = () => selectHour(hour.value, btn);
                 btn.innerHTML = `
-                    <span class="hour-name">${hour.name}</span>
+                    <span class="hour-name">${hour.name}时</span>
                     <span class="hour-time">${hour.time}</span>
                 `;
                 hourGrid.appendChild(btn);
@@ -872,7 +814,6 @@
             const year = parseInt(document.getElementById('yearSelect').value);
             const month = parseInt(document.getElementById('monthSelect').value);
             const day = parseInt(document.getElementById('daySelect').value);
-            const recentEvents = document.getElementById('recentEvents').value;
             
             // 显示加载动画
             document.getElementById('input-section').style.display = 'none';
@@ -901,7 +842,7 @@
                 const result = await response.json();
                 
                 // 显示结果
-                showResult(result, { year, month, day, recentEvents });
+                showResult(result, { year, month, day });
                 
             } catch (error) {
                 console.error('Error:', error);
@@ -917,9 +858,9 @@
             
             // 基本信息
             document.getElementById('user-info').innerHTML = `
-                <div style="font-size: 15px; line-height: 1.6;">
+                <div class="user-info">
                     <div><strong>性别：</strong>${gender === 'male' ? '男' : '女'}</div>
-                    <div><strong>出生：</strong>${userData.year}年${userData.month}月${userData.day}日 ${selectedHour}时</div>
+                    <div><strong>出生：</strong>${userData.year}年${userData.month}月${userData.day}日</div>
                     <div><strong>日历：</strong>${calendarType === 'lunar' ? '农历' : '公历'}</div>
                     ${selectedPrayer !== '全部' ? `<div><strong>祈福：</strong>${selectedPrayer}</div>` : ''}
                 </div>
@@ -1003,19 +944,13 @@
                             <div class="temple-header">
                                 <div>
                                     <div class="temple-name">${i + 1}. ${t.name}</div>
-                                    <div class="temple-location">📍 ${t.province || ''}${t.city || ''}${t.district || ''}</div>
+                                    <div class="temple-location">📍 ${t.province || ''}${t.city || ''}</div>
                                 </div>
-                                <div class="temple-rating">
-                                    ${'⭐'.repeat(Math.round(t.rating || 0))}
-                                </div>
+                                <div class="temple-rating">${'⭐'.repeat(Math.round(t.rating || 0))}</div>
                             </div>
                             <div class="temple-tags">${tags.join('')}</div>
                             <div class="match-badge">文化契合度</div>
-                            <div class="match-reason">${t.match_reason || t.reason || '暂无推荐理由'}</div>
-                            <div class="temple-details">
-                                ${t.prayer_focus ? `<div><strong>适合祈福：</strong>${t.prayer_focus.join('、')}</div>` : ''}
-                                ${t.features && t.features.length > 0 ? `<div style="margin-top: 8px;"><strong>特色：</strong>${t.features.join('、')}</div>` : ''}
-                            </div>
+                            <div class="match-reason">${t.match_reason || t.reason || '暂无'}</div>
                         </div>
                     `;
                 }).join('');
