@@ -208,8 +208,12 @@ def generate_cultural_reason(temple, weakest_wuxing, prayer_focus):
     # 1. 检查 features 中的特色标签
     features_str = ' '.join(features) if isinstance(features, list) else str(features)
     
-    if "1700 年" in features_str or "西晋" in features_str:
+    # 检查是否是潭柘寺（只有潭柘寺有 1700 年历史）
+    temple_name = temple.get("name", "")
+    if ("1700 年" in features_str or "西晋" in features_str) and "潭柘" in temple_name:
         reasons.append("北京最古寺院，1700 年历史见证朝代更迭")
+    elif "唐代" in features_str or "唐朝" in features_str:
+        reasons.append("唐代古刹，千年历史传承")
     elif "唐代" in features_str or "唐朝" in features_str:
         reasons.append("唐代古刹，千年历史传承")
     elif "宋代" in features_str or "宋朝" in features_str:
