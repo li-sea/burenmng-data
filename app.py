@@ -190,113 +190,6 @@ def categorize_temple(temple: Dict) -> str:
     return "local"
 
 # 寺庙匹配算法（多样化版本）
-
-def generate_cultural_reason(temple, weakest_wuxing, prayer_focus):
-    """
-    生成结合当地文化和传说的推荐理由
-    """
-    reasons = []
-    
-    features = temple.get("features", [])
-    description = temple.get("description", "")
-    temple_type = temple.get("type", "")
-    temple_subtype = temple.get("subtype", "")
-    rating = temple.get('rating', 0)
-    province = temple.get('province', '')
-    city = temple.get('city', '')
-    
-    # 1. 检查 features 中的特色标签
-    features_str = ' '.join(features) if isinstance(features, list) else str(features)
-    
-    # 检查是否是潭柘寺（只有潭柘寺有 1700 年历史）
-    temple_name = temple.get("name", "")
-    if ("1700 年" in features_str or "西晋" in features_str) and "潭柘" in temple_name:
-        reasons.append("北京最古寺院，1700 年历史见证朝代更迭")
-    elif "唐代" in features_str or "唐朝" in features_str:
-        reasons.append("唐代古刹，千年历史传承")
-    elif "唐代" in features_str or "唐朝" in features_str:
-        reasons.append("唐代古刹，千年历史传承")
-    elif "宋代" in features_str or "宋朝" in features_str:
-        reasons.append("宋代古寺，千年文化积淀")
-    elif "明代" in features_str or "明朝" in features_str:
-        reasons.append("明代古建，历史风貌保存完好")
-    elif "清代" in features_str or "清朝" in features_str:
-        reasons.append("清代寺院，历史底蕴深厚")
-    elif "东晋" in features_str:
-        reasons.append("东晋古刹，1600 年历史传承")
-    elif "古刹" in features_str or "古寺" in features_str:
-        reasons.append("历史古刹，文化传承悠久")
-    
-    # 2. 皇家/官方背景
-    if "皇家" in features_str or "皇家" in description:
-        reasons.append("皇家寺院，历代帝王祈福之地")
-    elif "世界文化" in features_str or "世界遗产" in description:
-        reasons.append("世界文化遗产，人类文明瑰宝")
-    elif "5A" in features_str or "5A" in description:
-        reasons.append("5A 级景区，国家级文化地标")
-    elif "4A" in features_str or "4A" in description:
-        reasons.append("4A 级景区，地方文化名片")
-    elif "著名" in features_str or "知名" in features_str:
-        reasons.append("地方著名寺庙，香火鼎盛")
-    
-    # 3. 宗派特色
-    if "祖庭" in features_str or "祖庭" in description:
-        reasons.append("佛教祖庭，宗派发源地")
-    elif "净土宗" in features_str or "净土宗" in description:
-        reasons.append("净土宗祖庭，佛教圣地")
-    elif "禅宗" in features_str or "禅宗" in description:
-        reasons.append("禅宗名刹，高僧辈出")
-    elif temple_type == "道教" and "名观" in description:
-        reasons.append("道教名观，修仙圣地")
-    
-    # 4. 地理位置特色
-    if province:
-        if "北京" in province:
-            reasons.append("京城古刹，历史文化中心")
-        elif "西藏" in province:
-            reasons.append("藏传佛教圣地，雪域高原")
-        elif "山西" in province:
-            reasons.append("三晋大地，佛教文化发源地之一")
-        elif "浙江" in province:
-            reasons.append("江南名刹，水乡佛国")
-    
-    # 5. 建筑/文化特色
-    if "净" in features_str and "土" in features_str:
-        reasons.append("净土宗祖庭，佛教圣地")
-    if "观音" in features_str:
-        reasons.append("观音道场，慈悲普度")
-    if "财神" in features_str:
-        reasons.append("财神庙宇，招财进宝")
-    
-    # 6. 五行匹配（简化版，放在最后）
-    wuxing_meaning = {"木": "生机发展", "火": "热情活力", "土": "稳定包容", "金": "坚定清晰", "水": "智慧流动"}
-    wuxing_text = wuxing_meaning.get(weakest_wuxing, "能量平衡")
-    
-    # 组合推荐理由
-    if reasons:
-        cultural_reason = "，".join(reasons[:2])  # 最多 2 条文化特色
-        final_reason = f"{cultural_reason}。五行{weakest_wuxing}属性，象征{wuxing_text}"
-    else:
-        # 没有特殊文化，用通用模板但也尽量差异化
-        if temple_type == "佛教":
-            final_reason = f"佛教寺院，清净庄严。五行{weakest_wuxing}属性，象征{wuxing_text}"
-        elif temple_type == "道教":
-            final_reason = f"道教宫观，修身养性。五行{weakest_wuxing}属性，象征{wuxing_text}"
-        elif temple_type == "文庙":
-            final_reason = f"文庙学府，文运昌盛。五行{weakest_wuxing}属性，象征{wuxing_text}"
-        else:
-            final_reason = f"传统五行文化中，{weakest_wuxing}代表{wuxing_text}"
-    
-    # 添加祈福主题（如果有）
-    if prayer_focus:
-        final_reason += f"，有助于{prayer_focus}"
-    
-    # 添加文化评级
-    final_reason += f"，文化评级{rating}⭐"
-    
-    return final_reason
-
-
 def match_temples(bazi_result: Dict, prayer_focus: Optional[str] = None, location: Optional[str] = None, limit: int = 5, seed: Optional[int] = None) -> List[Dict]:
     """
     寺庙匹配算法 - 多样化版本
@@ -430,9 +323,84 @@ def match_temples(bazi_result: Dict, prayer_focus: Optional[str] = None, locatio
         rand.shuffle(remaining_temples)
         result.extend(remaining_temples[:limit - len(result)])
     
-    # 添加匹配原因（结合当地文化和传说）
+    # 添加个性化匹配原因
+    reason_map = {"木": "生机与发展", "火": "热情与活力", "土": "稳定与包容", "金": "坚定与果断", "水": "智慧与变通"}
+    prayer_focus_map = {
+        "事业": {"keywords": ["事业", "智慧", "学业"], "wuxing": "木主事业"},
+        "财运": {"keywords": ["财运", "生意", "财富"], "wuxing": "金主财运"},
+        "姻缘": {"keywords": ["姻缘", "爱情", "婚姻"], "wuxing": "火主姻缘"},
+        "健康": {"keywords": ["健康", "平安", "长寿"], "wuxing": "水主健康"},
+        "平安": {"keywords": ["平安", "健康", "安"], "wuxing": "土主平安"},
+        "学业": {"keywords": ["学业", "智慧", "文昌"], "wuxing": "木主学业"},
+        "修行": {"keywords": ["修行", "智慧", "悟"], "wuxing": "水主修行"}
+    }
+    
     for temple in result:
-        temple["match_reason"] = generate_cultural_reason(temple, weakest_wuxing, prayer_focus)
+        # 获取寺庙的祈福方向
+        temple_prayers = temple.get("prayer_directions", [])
+        temple_stories = temple.get("folklore_stories", [])
+        temple_testimonials = temple.get("prayer_testimonials", [])
+        temple_rating = temple.get("rating", 0)
+        temple_type = temple.get("temple_type", "")
+        temple_name = temple.get("name", "")
+        
+        # 第一步：五行基础
+        reason_parts = []
+        reason_parts.append(f"你的八字五行中{weakest_wuxing}较弱，传统五行文化认为{weakest_wuxing}主{reason_map.get(weakest_wuxing, '')}，需要补充{weakest_wuxing}的能量")
+        
+        # 第二步：匹配用户祈福方向与寺庙祈福方向
+        if prayer_focus:
+            focus_info = prayer_focus_map.get(prayer_focus, {})
+            focus_keywords = focus_info.get("keywords", [prayer_focus])
+            
+            # 检查寺庙是否支持该祈福方向
+            matched_directions = []
+            for tp in temple_prayers:
+                for kw in focus_keywords:
+                    if kw in tp or tp in kw:
+                        matched_directions.append(tp)
+                        break
+            
+            if matched_directions:
+                reason_parts.append(f"{temple_name}在民间信仰中以" + "、".join(matched_directions) + "著称，信众口碑灵验")
+                # 找一个相关好评
+                if temple_testimonials:
+                    relevant = [t for t in temple_testimonials if any(kw in t.get("content", "") for kw in focus_keywords)]
+                    if relevant:
+                        best = max(relevant, key=lambda x: x.get("rating", 0))
+                        reason_parts.append(f"有信众反馈：'{best['content']}'")
+        
+        # 第三步：结合文化故事
+        if temple_stories:
+            # 选一个最有代表性的故事
+            story = temple_stories[0]
+            story_type = story.get("type", "")
+            story_title = story.get("title", "")
+            if story_type == "英雄传说":
+                reason_parts.append(f"传承历史文化：{story_title}，承载深厚文化底蕴")
+            elif story_type == "显灵传说":
+                reason_parts.append(f"民间广为流传{story_title}的传说，香火旺盛")
+            elif story_type == "圣物传说":
+                reason_parts.append(f"寺内{story_title}，被视为灵验之地")
+            else:
+                reason_parts.append(f"民间流传{story_title}的传说，具有深厚文化底蕴")
+        
+        # 第四步：寺庙类型定位
+        if "关帝" in temple_type or "关帝" in temple_name:
+            reason_parts.append("关帝信仰在民间被奉为武财神，护佑事业财运")
+        elif "冼太" in temple_type or "冼太" in temple_name:
+            reason_parts.append("冼太夫人是岭南圣母，护佑一方平安，德泽万民")
+        elif "观音" in temple_type or "观音" in temple_name:
+            reason_parts.append("观音菩萨大慈大悲，救苦救难，有求必应")
+        elif "道观" in temple_type or "道教" in temple_type:
+            reason_parts.append("道教文化讲究天人合一，顺应自然之道")
+        elif "清真" in temple_type:
+            reason_parts.append("伊斯兰文化崇尚和平与信仰的力量")
+        
+        # 第五步：评分背书
+        reason_parts.append(f"文化评级{temple_rating}⭐")
+        
+        temple["match_reason"] = "。".join(reason_parts)
         
         # 添加寺庙类型标签
         category = categorize_temple(temple)
