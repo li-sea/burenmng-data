@@ -192,13 +192,11 @@ def categorize_temple(temple: Dict) -> str:
 # 寺庙匹配算法（多样化版本）
 def match_temples(bazi_result: Dict, prayer_focus: Optional[str] = None, location: Optional[str] = None, limit: int = 5, seed: Optional[int] = None) -> List[Dict]:
     """
-    寺庙匹配算法 - 多样化版本
-    根据八字、祈福方向、地理位置推荐寺庙，确保结果多样性
-    
-    策略：
-    - 知名寺庙：0-2 座（随机）
-    - 地方寺庙：2-3 座（优先本地）
-    - 民间传说：1-2 座（有故事的）
+    寺庙匹配算法 - 3个不同级别版本
+    根据八字、祈福方向推荐3座不同级别的寺庙：
+    1. 有名气的（知名古刹/全国闻名）
+    2. 地方有名的（省级/市级知名）
+    3. 民间传说（有故事的地方小庙）
     """
     import random as rand
     
@@ -277,51 +275,37 @@ def match_temples(bazi_result: Dict, prayer_focus: Optional[str] = None, locatio
     local_temples.sort(key=lambda x: x["match_score"], reverse=True)
     folk_temples.sort(key=lambda x: x["match_score"], reverse=True)
     
-    # 多样化选择策略
+    # 新策略：固定 3 个不同级别
     result = []
     
-    # 1. 知名寺庙：0-2 座（随机选）
-    famous_count = rand.randint(0, 2) if len(famous_temples) > 0 else 0
-    if famous_count > 0 and len(famous_temples) > 0:
-        # 前 5 名中随机选
-        top_famous = famous_temples[:min(5, len(famous_temples))]
-        selected = rand.sample(top_famous, min(famous_count, len(top_famous)))
+    # 1. 有名气的：全国知名古刹（1座）
+    if len(famous_temples) > 0:
+        top_famous = famous_temples[:min(3, len(famous_temples))]
+        selected = rand.sample(top_famous, 1)
         result.extend(selected)
     
-    # 2. 地方寺庙：2-3 座（优先本地）
-    local_count = limit - len(result) - rand.randint(0, 1)  # 剩余名额
-    if local_count > 0 and len(local_temples) > 0:
-        # 有本地优先本地，没有就随机
+    # 2. 地方有名的：省级/市级知名寺庙（1座）
+    if len(local_temples) > 0:
         if location:
             local_matched = [t for t in local_temples if location in t.get("province", "") or location in t.get("city", "")]
             if len(local_matched) > 0:
-                result.extend(local_matched[:local_count])
-        
-        # 补齐名额
-        remaining = local_count - (len(result) - len([t for t in result if categorize_temple(t) == "local"]))
-        if remaining > 0:
-            # 随机选一些非本地的
-            other_locals = [t for t in local_temples if t not in result]
-            rand.shuffle(other_locals)
-            result.extend(other_locals[:remaining])
-    
-    # 3. 民间传说：1-2 座（有故事的）
-    if len(result) < limit and len(folk_temples) > 0:
-        folk_count = min(2, limit - len(result))
-        # 有历史故事的优先
-        folk_with_stories = [t for t in folk_temples if t.get("historical_stories") or t.get("description")]
-        if len(folk_with_stories) > 0:
-            rand.shuffle(folk_with_stories)
-            result.extend(folk_with_stories[:folk_count])
+                result.extend(rand.sample(local_matched[:5], 1))
+            else:
+                top_local = local_temples[:min(5, len(local_temples))]
+                result.extend(rand.sample(top_local, 1))
         else:
-            rand.shuffle(folk_temples)
-            result.extend(folk_temples[:folk_count])
+            top_local = local_temples[:min(5, len(local_temples))]
+            result.extend(rand.sample(top_local, 1))
     
-    # 如果还不够，用任意寺庙补齐
-    if len(result) < limit:
-        remaining_temples = [t for t in TEMPLES if t not in result]
-        rand.shuffle(remaining_temples)
-        result.extend(remaining_temples[:limit - len(result)])
+    # 3. 民间传说：有故事的地方小庙（1座）
+    if len(folk_temples) > 0:
+        folk_with_stories = [t for t in folk_temples if t.get("folklore_stories") or t.get("description")]
+        if len(folk_with_stories) > 0:
+            top_folk = folk_with_stories[:min(5, len(folk_with_stories))]
+            result.extend(rand.sample(top_folk, 1))
+        else:
+            top_folk = folk_temples[:min(5, len(folk_temples))]
+            result.extend(rand.sample(top_folk, 1))
     
     # 添加个性化匹配原因
     reason_map = {"木": "生机与发展", "火": "热情与活力", "土": "稳定与包容", "金": "坚定与果断", "水": "智慧与变通"}
@@ -402,14 +386,14 @@ def match_temples(bazi_result: Dict, prayer_focus: Optional[str] = None, locatio
         
         temple["match_reason"] = "。".join(reason_parts)
         
-        # 添加寺庙类型标签
+        # 添加寺庙类型标签（3个级别）
         category = categorize_temple(temple)
         if category == "famous":
             temple["temple_category"] = "知名古刹"
         elif category == "folk":
             temple["temple_category"] = "民间传说"
         else:
-            temple["temple_category"] = "地方寺庙"
+            temple["temple_category"] = "地方有名"
     
     return result[:limit]
 
